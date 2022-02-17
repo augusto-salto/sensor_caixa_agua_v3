@@ -20,7 +20,9 @@ void bluetooth_loop(){
     SerialBT.print(Serial.read());
   }
   while (SerialBT.available()) {
+
     Serial.write(SerialBT.read());
+    
   }
 
 
