@@ -27,7 +27,9 @@ void bluetooth_loop(){
 
 
 vTaskDelay(pdMS_TO_TICKS(200));
+
     SerialBT.print("\n");
     SerialBT.print(counter);
     counter = counter > 254 ? 0 : counter+1;
+    
 }
