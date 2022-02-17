@@ -42,8 +42,6 @@
 
     TaskHandle_t handle_firebase;
     TaskHandle_t handle_mqtt;
-    TaskHandle_t handle_sensor;
-    TaskHandle_t handle_geral;
     TaskHandle_t handle_updateFirmware;
 
     extern void task_geral( void *pvParameters );

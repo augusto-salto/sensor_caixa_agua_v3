@@ -38,3 +38,17 @@ void task_sensor( void *pvParameters )
         
     }
 }
+
+
+void vTask_sensor_init(){
+
+
+ xTaskCreate( task_sensor /* Funcao a qual esta implementado o que a tarefa deve fazer */
+                  , "taskSensorDebug" /* Nome (para fins de debug, se necessário) */
+                  , TASK_SENSOR_SIZE /* Tamanho da stack (em words) reservada para essa tarefa */
+                  , NULL /* Parametros passados (nesse caso, não há) */
+                  , 3 /* Prioridade */
+                  , &handle_sensor ); /* Handle da tarefa, opcional */
+
+
+}

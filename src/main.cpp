@@ -26,12 +26,7 @@ void setup()
 
 // CRIAÇÃO DAS TAREFAS
   #if USE_TASK_GERAL == 1
-    xTaskCreate( task_geral /* Funcao a qual esta implementado o que a tarefa deve fazer */
-                , "taskGeralDebug" /* Nome (para fins de debug, se necessário) */
-                , 3000 /* Tamanho da stack (em words) reservada para essa tarefa */
-                , NULL /* Parametros passados (nesse caso, não há) */
-                , 4 /* Prioridade */
-                , &handle_geral ); /* Handle da tarefa, opcional  */
+    vTask_Geral_start();
   #endif
 
     #if USE_FIREBASE == 1
@@ -61,12 +56,7 @@ void setup()
                   , &handle_updateFirmware ); 
     #endif
 
-      xTaskCreate( task_sensor /* Funcao a qual esta implementado o que a tarefa deve fazer */
-                  , "taskSensorDebug" /* Nome (para fins de debug, se necessário) */
-                  , TASK_SENSOR_SIZE /* Tamanho da stack (em words) reservada para essa tarefa */
-                  , NULL /* Parametros passados (nesse caso, não há) */
-                  , 3 /* Prioridade */
-                  , &handle_sensor ); /* Handle da tarefa, opcional */
+     vTask_sensor_init();
 
 }
 
