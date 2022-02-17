@@ -17,46 +17,31 @@ void setup()
   #endif
 
 
-// CRIAÇÃO DA FILA
+// CRIAÇÃO DAS FILAS
   xQueue_Nivel = xQueueCreate( 1, sizeof( float ) );
 
-// CRIAÇÃO DO SEMAFORO
+// CRIAÇÃO DOS SEMAFOROS
   xSerial_semaphore = xSemaphoreCreateMutex();
 
 
 // CRIAÇÃO DAS TAREFAS
   #if USE_TASK_GERAL == 1
-    vTask_Geral_start();
+    vTask_geral_start();
   #endif
 
     #if USE_FIREBASE == 1
-      xTaskCreate( task_firebase 
-                  , "taskFirebaseDebug" 
-                  , TASK_FIREBASE_SIZE 
-                  , NULL 
-                  , 4 
-                  , &handle_firebase ); 
+     vTask_firebase_start();
     #endif
 
     #if USE_MQTT == 1
-      xTaskCreate( task_mqtt 
-                  , "taskMqttDebug" 
-                  , TASK_MQTT_SIZE 
-                  , NULL 
-                  , TASK_MQTT_PRIORITY 
-                  , &handle_mqtt ); 
+     vTask_mqtt_start();
     #endif
 
     #if USE_UPDATE_FIRMWARE == 1
-      xTaskCreate( task_update_firmware 
-                  , "taskUpdateFirmware" 
-                  , TASK_UPDATE_FIRMWARE_SIZE 
-                  , NULL 
-                  , 2 
-                  , &handle_updateFirmware ); 
+      vTask_update_firmware_start();
     #endif
 
-     vTask_sensor_init();
+     vTask_sensor_start();
 
 }
 
