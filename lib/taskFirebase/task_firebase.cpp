@@ -1,6 +1,6 @@
 #include <task_firebase.h>
 
-
+TaskHandle_t handle_firebase;
 
 
 void task_firebase( void *pvParameters )
@@ -31,6 +31,17 @@ void task_firebase( void *pvParameters )
 
         vTaskDelay( 1000 / portTICK_PERIOD_MS ); 
     }
+}
+
+void vTask_firebase_start(){
+
+xTaskCreate( task_firebase 
+                  , "taskFirebaseDebug" 
+                  , TASK_FIREBASE_SIZE 
+                  , NULL 
+                  , 4 
+                  , &handle_firebase ); 
+
 }
 
 

@@ -1,6 +1,6 @@
 #include <task_sensor.h>
 
-
+TaskHandle_t handle_sensor;
 
 void task_sensor( void *pvParameters )
 {
@@ -40,7 +40,7 @@ void task_sensor( void *pvParameters )
 }
 
 
-void vTask_sensor_init(){
+void vTask_sensor_start(){
 
 
  xTaskCreate( task_sensor /* Funcao a qual esta implementado o que a tarefa deve fazer */

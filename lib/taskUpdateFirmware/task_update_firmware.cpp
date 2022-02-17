@@ -2,6 +2,7 @@
 
 #include <update_firmware.h>
 
+TaskHandle_t handle_updateFirmware;
 
 void task_update_firmware( void *pvParameters )
 {
@@ -56,3 +57,15 @@ void task_update_firmware( void *pvParameters )
 
     } // END WHILE(1)
 } // END TASK
+
+
+void vTask_update_firmware_start(){
+
+    xTaskCreate( task_update_firmware 
+                  , "taskUpdateFirmware" 
+                  , TASK_UPDATE_FIRMWARE_SIZE 
+                  , NULL 
+                  , 2 
+                  , &handle_updateFirmware ); 
+                  
+}

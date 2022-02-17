@@ -12,9 +12,9 @@
 extern QueueHandle_t xQueue_Nivel;
 extern SemaphoreHandle_t xSerial_semaphore;
 
-TaskHandle_t handle_sensor;
+
 void task_sensor( void *pvParameters );
-void vTask_sensor_init();
+void vTask_sensor_start();
 
 
 

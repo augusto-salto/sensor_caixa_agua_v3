@@ -40,13 +40,13 @@
     QueueHandle_t xQueue_Nivel;
     SemaphoreHandle_t xSerial_semaphore;
 
-    TaskHandle_t handle_firebase;
-    TaskHandle_t handle_mqtt;
-    TaskHandle_t handle_updateFirmware;
+    
+    
+    
 
-    extern void task_geral( void *pvParameters );
-    extern void task_firebase( void *pvParameters );
-    extern void task_sensor( void *pvParameters );
+    //extern void task_geral( void *pvParameters );
+    //extern void task_firebase( void *pvParameters );
+    //extern void task_sensor( void *pvParameters );
 
 
 

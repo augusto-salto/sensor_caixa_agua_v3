@@ -1,6 +1,6 @@
 #include <task_mqtt.h>
 
-
+TaskHandle_t handle_mqtt;
 
 void task_mqtt( void *pvParameters )
 {
@@ -41,4 +41,17 @@ void task_mqtt( void *pvParameters )
         //vTaskDelay( 1 / portTICK_PERIOD_MS );
         
     }
+}
+
+void vTask_mqtt_start(){
+
+ xTaskCreate( task_mqtt 
+                  , "taskMqttDebug" 
+                  , TASK_MQTT_SIZE 
+                  , NULL 
+                  , TASK_MQTT_PRIORITY 
+                  , &handle_mqtt ); 
+
+
+
 }

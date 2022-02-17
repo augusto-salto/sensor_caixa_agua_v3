@@ -1,5 +1,6 @@
 #include <task_geral.h>
 
+TaskHandle_t handle_geral;
 
 void task_geral( void *pvParameters )
 {

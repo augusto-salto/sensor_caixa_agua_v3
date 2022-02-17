@@ -17,7 +17,7 @@
 extern SemaphoreHandle_t xSerial_semaphore;
 
 void task_mqtt( void *pvParameters );
-
+void vTask_mqtt_start();
 
 
 

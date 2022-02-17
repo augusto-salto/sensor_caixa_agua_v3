@@ -26,10 +26,10 @@ extern TaskHandle_t handle_mqtt;
 extern PppTech pppTech; 
 extern SemaphoreHandle_t xSerial_semaphore;
 
-TaskHandle_t handle_geral;
+
 
 void task_geral( void *pvParameters );
-void vTask_Geral_start();
+void vTask_geral_start();
 
 
 

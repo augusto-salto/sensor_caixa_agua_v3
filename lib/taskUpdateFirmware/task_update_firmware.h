@@ -11,13 +11,13 @@
 
 extern String FirmwareVer;
 extern SemaphoreHandle_t xSerial_semaphore;
-void task_update_firmware( void *pvParameters );
 
 extern TaskHandle_t handle_firebase;
 extern TaskHandle_t handle_mqtt;
 extern TaskHandle_t handle_sensor;
 extern TaskHandle_t handle_geral;
 
-
+void task_update_firmware( void *pvParameters );
+void vTask_update_firmware_start();
 
 #endif

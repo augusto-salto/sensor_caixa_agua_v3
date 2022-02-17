@@ -20,11 +20,8 @@ extern QueueHandle_t xQueue_Nivel;
 extern SemaphoreHandle_t xSerial_semaphore;
 
 
-
-
-
 void task_firebase( void *pvParameters );
-
+void vTask_firebase_start();
 
 
 
