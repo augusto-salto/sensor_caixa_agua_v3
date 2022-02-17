@@ -28,7 +28,9 @@
 
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
-#include <bluetooth_lib.h>
+
+//#include <bluetooth_lib.h>
+#include <bluetooth_ble_lib.h>
 
 #define ONBOARD_BUTTON 0
 #define BUFF_SIZE 1000

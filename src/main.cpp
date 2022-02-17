@@ -10,8 +10,9 @@ void setup()
 
 
   Serial.begin(115200);
-  bluetooth_init();
- 
+  //bluetooth_init();
+  ble_setup();
+
   #if USE_WIFI_MANAGER == 1
     pppTech.init();
   #endif
@@ -49,7 +50,8 @@ void setup()
 
 void loop() {
   
-bluetooth_loop();
+//bluetooth_loop();
+ble_loop();
 vTaskDelay(pdMS_TO_TICKS(5));
 
  
