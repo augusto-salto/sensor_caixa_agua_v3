@@ -1,7 +1,15 @@
 #include <bluetooth_ble_lib.h>
 
 
-BLECharacteristic *pCharacteristic;
+BLECharacteristic *pCharacteristicEmail;
+BLECharacteristic *pCharacteristicPassword;
+BLECharacteristic *pCharacteristicName;
+BLECharacteristic *pCharacteristicSSID;
+BLECharacteristic *pCharacteristicSSIDPassword;
+BLECharacteristic *pCharacteristicAlternativeMqttServer;
+BLECharacteristic *pCharacteristicAlternativeMqtttPort;
+
+
 bool deviceConnected = false;
 int humidity = 100;
 int temperature = 222;
@@ -25,14 +33,11 @@ class MyServerCallbacks: public BLEServerCallbacks {
 class MyCallbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
       std::string rxValue = pCharacteristic->getValue();
-      String varBuffer;
-      String valueBuffer;
+      //String varBuffer;
+      //String valueBuffer;
       String UUIDstring = pCharacteristic->getUUID().toString().c_str();
       UUIDstring.toUpperCase();
 
-      
-      
-      //Serial.println(rxValue[0]);
  
       if (rxValue.length() > 0) {
         Serial.print("\n*** MENSAGEM RECEBIDA! *** ");
@@ -46,8 +51,8 @@ class MyCallbacks: public BLECharacteristicCallbacks {
           receivBuff += rxValue[i];
         }
 
-        varBuffer = receivBuff.substring(0, receivBuff.indexOf(":"));
-        valueBuffer = receivBuff.substring(receivBuff.indexOf(":")+1);
+        //varBuffer = receivBuff.substring(0, receivBuff.indexOf(":"));
+        //valueBuffer = receivBuff.substring(receivBuff.indexOf(":")+1);
         received = receivBuff;
         receivBuff = "";
 
@@ -56,12 +61,19 @@ class MyCallbacks: public BLECharacteristicCallbacks {
           Serial.print("\nEmail: ");
           Serial.print(received);
           Serial.print("\n");
+          received = received + " feedback";
+          pCharacteristicEmail->setValue(received.c_str());
+          pCharacteristicEmail->notify();
+
         }
           else if(UUIDstring.equals(String(CHARACTERISTIC_PASSWORD)))
           {
           Serial.print("\nPASSWORD: ");
           Serial.print(received);
           Serial.print("\n");
+          received = received + " feedback";
+          pCharacteristicPassword->setValue(received.c_str());
+          pCharacteristicPassword->notify();
           }
 
           else if(UUIDstring.equals(String(CHARACTERISTIC_NAME)))
@@ -69,6 +81,9 @@ class MyCallbacks: public BLECharacteristicCallbacks {
           Serial.print("\nNAME: ");
           Serial.print(received);
           Serial.print("\n");
+          received = received + " feedback";
+          pCharacteristicName->setValue(received.c_str());
+          pCharacteristicName->notify();
           }
 
           else if(UUIDstring.equals(String(CHARACTERISTIC_SSID)))
@@ -76,6 +91,9 @@ class MyCallbacks: public BLECharacteristicCallbacks {
           Serial.print("\nSSID: ");
           Serial.print(received);
           Serial.print("\n");
+          received = received + " feedback";
+          pCharacteristicSSID->setValue(received.c_str());
+          pCharacteristicSSID->notify();
           }
 
           else if(UUIDstring.equals(String(CHARACTERISTIC_SSIDPASSWORD)))
@@ -83,6 +101,9 @@ class MyCallbacks: public BLECharacteristicCallbacks {
           Serial.print("\nSSID PASSWORD: ");
           Serial.print(received);
           Serial.print("\n");
+          received = received + " feedback";
+          pCharacteristicSSIDPassword->setValue(received.c_str());
+          pCharacteristicSSIDPassword->notify();
           }
 
           else if(UUIDstring.equals(String(CHARACTERISTIC_ALTERNATIVEMQTTSERVER)))
@@ -90,6 +111,9 @@ class MyCallbacks: public BLECharacteristicCallbacks {
           Serial.print("\nALTERNATIVE MQTT SERVER: ");
           Serial.print(received);
           Serial.print("\n");
+          received = received + " feedback";
+          pCharacteristicAlternativeMqttServer->setValue(received.c_str());
+          pCharacteristicAlternativeMqttServer->notify();
           }
 
           else if(UUIDstring.equals(String(CHARACTERISTIC_ALTERNATIVEMQTTPORT)))
@@ -97,6 +121,9 @@ class MyCallbacks: public BLECharacteristicCallbacks {
           Serial.print("\nALTERNATIVE MQTT PORT: ");
           Serial.print(received);
           Serial.print("\n");
+          received = received + " feedback";
+          pCharacteristicAlternativeMqtttPort->setValue(received.c_str());
+          pCharacteristicAlternativeMqtttPort->notify();
           }
 
           
@@ -108,14 +135,14 @@ class MyCallbacks: public BLECharacteristicCallbacks {
       }
  
       // Processa o caracter recebido do aplicativo. Se for A acende o LED. B apaga o LED
-      if (rxValue.find("A") != -1) { 
+    /*  if (rxValue.find("A") != -1) { 
         Serial.println("Turning ON!");
         digitalWrite(LED_BUILTIN, HIGH);
       }
       else if (rxValue.find("B") != -1) {
         Serial.println("Turning OFF!");
         digitalWrite(LED_BUILTIN, LOW);
-      }
+      }*/
     }
 };
 
@@ -124,92 +151,91 @@ void ble_setup(){
 // Create the BLE Device
     //BLEDevice::setMTU(128);
   BLEDevice::init("PPPTECH_NIVEL_SENSOR"); // Give it a name
-  
- 
   // Configura o dispositivo como Servidor BLE
   BLEServer *pServer = BLEDevice::createServer();
   pServer->setCallbacks(new MyServerCallbacks());
 
  
   // Cria o servico UART
-  BLEService *pService = pServer->createService(BLEUUID(SERVICE_UUID), (uint32_t) 25, (uint8_t) 0);
+  BLEService *pService = pServer->createService(BLEUUID(SERVICE_UUID), (uint32_t) 30, (uint8_t) 0);
   
  
-  // Cria uma Característica BLE para envio dos dados
-  pCharacteristic = pService->createCharacteristic(
-                      DHTDATA_CHAR_UUID,
-                      BLECharacteristic::PROPERTY_NOTIFY |
-                      BLECharacteristic::PROPERTY_READ |
-                      BLECharacteristic::PROPERTY_WRITE
-                    );
-                       
-  pCharacteristic->addDescriptor(new BLE2902());
+ 
  
   // cria uma característica BLE para recebimento dos dados
-  BLECharacteristic *pCharacteristic = pService->createCharacteristic(
-                                         CHARACTERISTIC_UUID_RX,
-                                         BLECharacteristic::PROPERTY_READ |
-                                         BLECharacteristic::PROPERTY_WRITE
-                                       );
+ 
 
-  BLECharacteristic *pCharacteristicTx = pService->createCharacteristic(
-                                         CHARACTERISTIC_UUID_TX,
-                                         BLECharacteristic::PROPERTY_READ |
-                                         BLECharacteristic::PROPERTY_WRITE
-                                       );
 
-  BLECharacteristic *pCharacteristicEmail = pService->createCharacteristic(
+  pCharacteristicEmail = pService->createCharacteristic(
                                          CHARACTERISTIC_EMAIL,
+                                         BLECharacteristic::PROPERTY_NOTIFY |
                                          BLECharacteristic::PROPERTY_READ |
                                          BLECharacteristic::PROPERTY_WRITE
                                        );      
 
-  BLECharacteristic *pCharacteristicPassword = pService->createCharacteristic(
+  
+
+  pCharacteristicPassword = pService->createCharacteristic(
                                          CHARACTERISTIC_PASSWORD,
+                                         BLECharacteristic::PROPERTY_NOTIFY |
                                          BLECharacteristic::PROPERTY_READ |
                                          BLECharacteristic::PROPERTY_WRITE
                                        );  
 
-  BLECharacteristic *pCharacteristicName = pService->createCharacteristic(
+  pCharacteristicName = pService->createCharacteristic(
                                          CHARACTERISTIC_NAME,
+                                         BLECharacteristic::PROPERTY_NOTIFY |
                                          BLECharacteristic::PROPERTY_READ |
                                          BLECharacteristic::PROPERTY_WRITE
                                        );     
 
-  BLECharacteristic *pCharacteristicSSID = pService->createCharacteristic(
+  pCharacteristicSSID = pService->createCharacteristic(
                                          CHARACTERISTIC_SSID,
+                                         BLECharacteristic::PROPERTY_NOTIFY |
                                          BLECharacteristic::PROPERTY_READ |
                                          BLECharacteristic::PROPERTY_WRITE
                                        );                                                                        
 
-  BLECharacteristic *pCharacteristicSSIDPassword = pService->createCharacteristic(
+  pCharacteristicSSIDPassword = pService->createCharacteristic(
                                          CHARACTERISTIC_SSIDPASSWORD,
+                                         BLECharacteristic::PROPERTY_NOTIFY |
                                          BLECharacteristic::PROPERTY_READ |
                                          BLECharacteristic::PROPERTY_WRITE
                                        );  
 
 
-  BLECharacteristic *pCharacteristicSSIDAlternativeMqttServer = pService->createCharacteristic(
+  pCharacteristicAlternativeMqttServer = pService->createCharacteristic(
                                          CHARACTERISTIC_ALTERNATIVEMQTTSERVER,
+                                         BLECharacteristic::PROPERTY_NOTIFY |
                                          BLECharacteristic::PROPERTY_READ |
                                          BLECharacteristic::PROPERTY_WRITE
                                        );     
 
-  BLECharacteristic *pCharacteristicSSIDAlternativeMqtttPort = pService->createCharacteristic(
+  pCharacteristicAlternativeMqtttPort = pService->createCharacteristic(
                                          CHARACTERISTIC_ALTERNATIVEMQTTPORT,
+                                         BLECharacteristic::PROPERTY_NOTIFY |
                                          BLECharacteristic::PROPERTY_READ |
                                          BLECharacteristic::PROPERTY_WRITE
                                        );                                          
                                        
  
-  pCharacteristic->setCallbacks(new MyCallbacks());
+  
   pCharacteristicEmail->setCallbacks(new MyCallbacks());
   pCharacteristicPassword->setCallbacks(new MyCallbacks());
   pCharacteristicName->setCallbacks(new MyCallbacks());
   pCharacteristicSSID->setCallbacks(new MyCallbacks());
   pCharacteristicSSIDPassword->setCallbacks(new MyCallbacks());
-  pCharacteristicSSIDAlternativeMqttServer->setCallbacks(new MyCallbacks());
-  pCharacteristicSSIDAlternativeMqtttPort->setCallbacks(new MyCallbacks());
+  pCharacteristicAlternativeMqttServer->setCallbacks(new MyCallbacks());
+  pCharacteristicAlternativeMqtttPort->setCallbacks(new MyCallbacks());
+
+  //pCharacteristicEmail->addDescriptor(new BLE2902());
+  //pCharacteristicPassword->addDescriptor(new BLE2902());
+  //pCharacteristicName->addDescriptor(new BLE2902());
+  //pCharacteristicSSID->addDescriptor(new BLE2902());
+  //pCharacteristicSSIDPassword->addDescriptor(new BLE2902());
+  //pCharacteristicAlternativeMqttServer->addDescriptor(new BLE2902());
+  //pCharacteristicAlternativeMqtttPort->addDescriptor(new BLE2902());
+  
 
   // Inicia o serviço
   pService->start();
@@ -218,10 +244,17 @@ void ble_setup(){
   // Inicia a descoberta do ESP32
   pServer->getAdvertising()->start();
   Serial.println("Esperando um cliente se conectar...");
-  pCharacteristic->setValue("Hello World");
+  //pCharacteristicEmail->setValue("augusto.salto@hotmail.com");
 }
 
 void ble_loop(){
+
+
+    if(humidity < 199 ){
+      humidity++;
+    }else{
+      humidity = 1;
+    }
 
     if (deviceConnected) {
  
@@ -235,9 +268,10 @@ void ble_loop(){
     char dhtDataString[16];
     sprintf(dhtDataString, "%d,%d", temperature, humidity);
      
-    pCharacteristic->setValue(dhtDataString);
-     
-    pCharacteristic->notify(); // Envia o valor para o aplicativo!
+    //pCharacteristicEmail->setValue(dhtDataString);
+    //pCharacteristicEmail->notify(); 
+
+    // Envia o valor para o aplicativo!
     //Serial.print("*** Dado enviado: ");
     //Serial.print(dhtDataString);
     //Serial.println(" ***");
