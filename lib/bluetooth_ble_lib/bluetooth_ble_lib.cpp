@@ -17,19 +17,28 @@ class MyServerCallbacks: public BLEServerCallbacks {
     void onDisconnect(BLEServer* pServer) {
       deviceConnected = false;
     }
+
+    
 };
+
 
 class MyCallbacks: public BLECharacteristicCallbacks {
     void onWrite(BLECharacteristic *pCharacteristic) {
       std::string rxValue = pCharacteristic->getValue();
       String varBuffer;
       String valueBuffer;
+      String UUIDstring = pCharacteristic->getUUID().toString().c_str();
+      UUIDstring.toUpperCase();
+
+      
       
       //Serial.println(rxValue[0]);
  
       if (rxValue.length() > 0) {
-        Serial.println("*********");
-        Serial.print("length: " + String(rxValue.length()));
+        Serial.print("\n*** MENSAGEM RECEBIDA! *** ");
+        Serial.print("\nCharacteristic UUID: ");
+        Serial.print(pCharacteristic->getUUID().toString().c_str());
+        Serial.print("\nMsg length: " + String(rxValue.length()));
         //Serial.print("\nReceived Value: ");
  
         for (int i = 0; i < rxValue.length(); i++) {
@@ -42,12 +51,60 @@ class MyCallbacks: public BLECharacteristicCallbacks {
         received = receivBuff;
         receivBuff = "";
 
-        Serial.println();
-        Serial.println("*********");
-        Serial.print("VARIAVEL: " + varBuffer);
-        Serial.print("\nVALOR: " + valueBuffer);
-        Serial.print("\nString de teste: " + received);
-        Serial.print("\n");
+        if(UUIDstring.equals(String(CHARACTERISTIC_EMAIL)))
+        {
+          Serial.print("\nEmail: ");
+          Serial.print(received);
+          Serial.print("\n");
+        }
+          else if(UUIDstring.equals(String(CHARACTERISTIC_PASSWORD)))
+          {
+          Serial.print("\nPASSWORD: ");
+          Serial.print(received);
+          Serial.print("\n");
+          }
+
+          else if(UUIDstring.equals(String(CHARACTERISTIC_NAME)))
+          {
+          Serial.print("\nNAME: ");
+          Serial.print(received);
+          Serial.print("\n");
+          }
+
+          else if(UUIDstring.equals(String(CHARACTERISTIC_SSID)))
+          {
+          Serial.print("\nSSID: ");
+          Serial.print(received);
+          Serial.print("\n");
+          }
+
+          else if(UUIDstring.equals(String(CHARACTERISTIC_SSIDPASSWORD)))
+          {
+          Serial.print("\nSSID PASSWORD: ");
+          Serial.print(received);
+          Serial.print("\n");
+          }
+
+          else if(UUIDstring.equals(String(CHARACTERISTIC_ALTERNATIVEMQTTSERVER)))
+          {
+          Serial.print("\nALTERNATIVE MQTT SERVER: ");
+          Serial.print(received);
+          Serial.print("\n");
+          }
+
+          else if(UUIDstring.equals(String(CHARACTERISTIC_ALTERNATIVEMQTTPORT)))
+          {
+          Serial.print("\nALTERNATIVE MQTT PORT: ");
+          Serial.print(received);
+          Serial.print("\n");
+          }
+
+          
+        
+        //Serial.print("\nVARIAVEL: " + varBuffer);
+        //Serial.print("\nVALOR: " + valueBuffer);
+        //Serial.print("\nString de teste: " + received);
+        //Serial.print("\n");
       }
  
       // Processa o caracter recebido do aplicativo. Se for A acende o LED. B apaga o LED
@@ -75,13 +132,15 @@ void ble_setup(){
 
  
   // Cria o servico UART
-  BLEService *pService = pServer->createService(SERVICE_UUID);
+  BLEService *pService = pServer->createService(BLEUUID(SERVICE_UUID), (uint32_t) 25, (uint8_t) 0);
   
  
   // Cria uma Característica BLE para envio dos dados
   pCharacteristic = pService->createCharacteristic(
                       DHTDATA_CHAR_UUID,
-                      BLECharacteristic::PROPERTY_NOTIFY
+                      BLECharacteristic::PROPERTY_NOTIFY |
+                      BLECharacteristic::PROPERTY_READ |
+                      BLECharacteristic::PROPERTY_WRITE
                     );
                        
   pCharacteristic->addDescriptor(new BLE2902());
@@ -89,18 +148,77 @@ void ble_setup(){
   // cria uma característica BLE para recebimento dos dados
   BLECharacteristic *pCharacteristic = pService->createCharacteristic(
                                          CHARACTERISTIC_UUID_RX,
+                                         BLECharacteristic::PROPERTY_READ |
                                          BLECharacteristic::PROPERTY_WRITE
                                        );
+
+  BLECharacteristic *pCharacteristicTx = pService->createCharacteristic(
+                                         CHARACTERISTIC_UUID_TX,
+                                         BLECharacteristic::PROPERTY_READ |
+                                         BLECharacteristic::PROPERTY_WRITE
+                                       );
+
+  BLECharacteristic *pCharacteristicEmail = pService->createCharacteristic(
+                                         CHARACTERISTIC_EMAIL,
+                                         BLECharacteristic::PROPERTY_READ |
+                                         BLECharacteristic::PROPERTY_WRITE
+                                       );      
+
+  BLECharacteristic *pCharacteristicPassword = pService->createCharacteristic(
+                                         CHARACTERISTIC_PASSWORD,
+                                         BLECharacteristic::PROPERTY_READ |
+                                         BLECharacteristic::PROPERTY_WRITE
+                                       );  
+
+  BLECharacteristic *pCharacteristicName = pService->createCharacteristic(
+                                         CHARACTERISTIC_NAME,
+                                         BLECharacteristic::PROPERTY_READ |
+                                         BLECharacteristic::PROPERTY_WRITE
+                                       );     
+
+  BLECharacteristic *pCharacteristicSSID = pService->createCharacteristic(
+                                         CHARACTERISTIC_SSID,
+                                         BLECharacteristic::PROPERTY_READ |
+                                         BLECharacteristic::PROPERTY_WRITE
+                                       );                                                                        
+
+  BLECharacteristic *pCharacteristicSSIDPassword = pService->createCharacteristic(
+                                         CHARACTERISTIC_SSIDPASSWORD,
+                                         BLECharacteristic::PROPERTY_READ |
+                                         BLECharacteristic::PROPERTY_WRITE
+                                       );  
+
+
+  BLECharacteristic *pCharacteristicSSIDAlternativeMqttServer = pService->createCharacteristic(
+                                         CHARACTERISTIC_ALTERNATIVEMQTTSERVER,
+                                         BLECharacteristic::PROPERTY_READ |
+                                         BLECharacteristic::PROPERTY_WRITE
+                                       );     
+
+  BLECharacteristic *pCharacteristicSSIDAlternativeMqtttPort = pService->createCharacteristic(
+                                         CHARACTERISTIC_ALTERNATIVEMQTTPORT,
+                                         BLECharacteristic::PROPERTY_READ |
+                                         BLECharacteristic::PROPERTY_WRITE
+                                       );                                          
+                                       
  
   pCharacteristic->setCallbacks(new MyCallbacks());
- 
+  pCharacteristicEmail->setCallbacks(new MyCallbacks());
+  pCharacteristicPassword->setCallbacks(new MyCallbacks());
+  pCharacteristicName->setCallbacks(new MyCallbacks());
+  pCharacteristicSSID->setCallbacks(new MyCallbacks());
+  pCharacteristicSSIDPassword->setCallbacks(new MyCallbacks());
+  pCharacteristicSSIDAlternativeMqttServer->setCallbacks(new MyCallbacks());
+  pCharacteristicSSIDAlternativeMqtttPort->setCallbacks(new MyCallbacks());
+
   // Inicia o serviço
   pService->start();
+  
  
   // Inicia a descoberta do ESP32
   pServer->getAdvertising()->start();
   Serial.println("Esperando um cliente se conectar...");
-
+  pCharacteristic->setValue("Hello World");
 }
 
 void ble_loop(){
