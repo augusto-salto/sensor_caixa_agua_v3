@@ -3,6 +3,7 @@
 WifiBleManager wifiblemanager;
 
 String teste = "";
+char email[EMAIL_SIZE] = "augusto.salto@hotmail.com";
 
 void setup() 
 {
@@ -55,15 +56,20 @@ void loop() {
   
 //bluetooth_loop();
 ble_loop();
+vTaskDelay(pdMS_TO_TICKS(3000));
 
 teste = String(wifiblemanager.getEmail());
+vTaskDelay(pdMS_TO_TICKS(500));
+wifiblemanager.setEmail(email);
+vTaskDelay(pdMS_TO_TICKS(500));
 
-Serial.print("\nWIFISSID: ");
+Serial.print("\nTESTE E-MAIL: ");
 Serial.print (teste);
 Serial.print ("\n");
-Serial.print("\ngetEmail: ");
-Serial.print (wifiblemanager.getMqttPort());
+Serial.print("\nNOVO E-MAIL: ");
+Serial.print (wifiblemanager.getEmail());
 Serial.print ("\n");
+
 
 vTaskDelay(pdMS_TO_TICKS(1005));
 

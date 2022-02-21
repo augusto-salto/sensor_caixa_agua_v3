@@ -72,14 +72,14 @@ String WifiBleManager::getEmailPassword(){
     return this->_emailPassoword;
 }
 
-String WifiBleManager::getMqttPort(){
-    this->_getStringFromFS(_mqttPort, "mqttPort");
-    return this->_mqttPort;
-}
-
 String WifiBleManager::getNameSensor(){
     this->_getStringFromFS(_nameSensor, "nameSensor");
     return this->_nameSensor;
+}
+
+String WifiBleManager::getMqttPort(){
+    this->_getStringFromFS(_mqttPort, "mqttPort");
+    return this->_mqttPort;
 }
 
 String WifiBleManager::getMqttServer(){
@@ -87,8 +87,90 @@ String WifiBleManager::getMqttServer(){
     return this->_mqttServer;
 }
 
+bool WifiBleManager::setWifiSSID(char *SSIDname){
+
+  strcpy(this->_wifiSSID, SSIDname);
+
+  return  this->_setStringToFS(_wifiSSID, JSON_ADDR_SSID_NAME);
+
+}
+
+bool WifiBleManager::setWifiPassword(char *SSIDpassword){
+
+  strcpy(this->_wifiPassword, SSIDpassword);
+
+  return  this->_setStringToFS(_wifiPassword, JSON_ADDR_SSID_PASSWORD);
+
+}
+
+bool WifiBleManager::setEmail(char *email){
+
+  strcpy(this->_email, email);
+
+ return   this->_setStringToFS(_email, JSON_ADDR_EMAIL);
+
+}
+
+bool WifiBleManager::setEmailPassword(char *emailPassoword){
+
+  strcpy(this->_emailPassoword, emailPassoword);
+
+  return  this->_setStringToFS(_emailPassoword, JSON_ADDR_EMAIL_PASSWORD);
+
+}
+
+bool WifiBleManager::setNameSensor(char *nameSensor){
+
+  strcpy(this->_nameSensor, nameSensor);
+
+  return this->_setStringToFS(_nameSensor, JSON_ADDR_NAME_SENSOR);
+
+}
+
+bool WifiBleManager::setMqttServer(char *mqttServer){
+
+  strcpy(this->_mqttServer, mqttServer);
+
+  return this->_setStringToFS(_mqttServer, JSON_ADDR_MQTT_SERVER);
+
+}
+
+bool WifiBleManager::setMqttPort(char *mqttPort){
+
+  strcpy(this->_mqttPort, mqttPort);
+
+  return this->_setStringToFS(_mqttPort, JSON_ADDR_MQTT_PORT);
+
+}
+
+
+
+bool WifiBleManager::_setStringToFS(char *ptr, const char* name){
+
+     DynamicJsonDocument json(1024);
+    
+    json[name] = ptr;
+    
+
+    File configFile = LITTLEFS.open("/config.json", "w");
+
+    if (!configFile) {
+      Serial.println("failed to open config file for writing");
+      return false;
+
+    }
+
+    serializeJson(json, configFile);
+
+    configFile.close();
+
+    return true;
+    
+}
+
 
 void WifiBleManager::_getStringFromFS(char *ptr,  const char* name){
+
    char returnBuff[100];
     char *ponteiro = ptr;
 
@@ -97,6 +179,7 @@ void WifiBleManager::_getStringFromFS(char *ptr,  const char* name){
     if (LITTLEFS.exists("/config.json")) {
  
       File configFile = LITTLEFS.open("/config.json", "r");
+
       if (configFile) {
         
         size_t size = configFile.size();
@@ -105,10 +188,10 @@ void WifiBleManager::_getStringFromFS(char *ptr,  const char* name){
 
         configFile.readBytes(buf.get(), size);
 
-
         DynamicJsonDocument json(1024);
+
         auto deserializeError = deserializeJson(json, buf.get());
-        serializeJson(json, Serial);
+
         if ( ! deserializeError ) {
          
 
