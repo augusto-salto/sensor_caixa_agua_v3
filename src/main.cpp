@@ -1,6 +1,8 @@
 #include <main.h>
 
+WifiBleManager wifiblemanager;
 
+String teste = "";
 
 void setup() 
 {
@@ -12,6 +14,7 @@ void setup()
   Serial.begin(115200);
   //bluetooth_init();
   ble_setup();
+  
 
   #if USE_WIFI_MANAGER == 1
     pppTech.init();
@@ -52,7 +55,17 @@ void loop() {
   
 //bluetooth_loop();
 ble_loop();
-vTaskDelay(pdMS_TO_TICKS(5));
+
+teste = String(wifiblemanager.getEmail());
+
+Serial.print("\nWIFISSID: ");
+Serial.print (teste);
+Serial.print ("\n");
+Serial.print("\ngetEmail: ");
+Serial.print (wifiblemanager.getMqttPort());
+Serial.print ("\n");
+
+vTaskDelay(pdMS_TO_TICKS(1005));
 
  
 

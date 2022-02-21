@@ -31,6 +31,7 @@
 
 //#include <bluetooth_lib.h>
 #include <bluetooth_ble_lib.h>
+#include <wifi_ble_manager.h>
 
 #define ONBOARD_BUTTON 0
 #define BUFF_SIZE 1000
