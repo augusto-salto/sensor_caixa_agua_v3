@@ -60,7 +60,7 @@ class FileSystemManager
         char _mqttPort[20];
 
         void _getStringFromFS(char *ptr,  const char* name);
-        bool _setStringToFS(char *ptr, const char* name);
+        bool _setStringToFS();
 
 
 

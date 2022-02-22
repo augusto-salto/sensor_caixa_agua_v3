@@ -1,36 +1,13 @@
 #include <file_system_manager.h>
 
 
-
 FileSystemManager::FileSystemManager(){
 
-        
            
 }
 
 
 bool FileSystemManager::isConfigured(){
-
-/*DynamicJsonDocument json(1024);
-    
-    json["email"] = "saveEmail";
-    json["passwordEmail"] = "savePassword";
-    json["nameSensor"] = "saveEmail";
-    ----------------json["wifiSSID"] = "savePassword";
-    ----------------json["wifiPassword"] = "saveEmail";
-    json["mqttServer"] = "savePassword";
-    json["mqttPort"] = "savePassword";
-
-    File configFile = LITTLEFS.open("/config.json", "w");
-    if (!configFile) {
-      Serial.println("failed to open config file for writing");
-    }
-
-    serializeJson(json, Serial);
-    serializeJson(json, configFile);
-
-    configFile.close();*/
-    
 
     if (LITTLEFS.begin() == true) {
        
@@ -44,7 +21,7 @@ bool FileSystemManager::isConfigured(){
         
 
     }else{
-        Serial.print("\n111111111111");
+        
         return false;
     }
        
@@ -53,37 +30,37 @@ bool FileSystemManager::isConfigured(){
 
 
 String FileSystemManager::getWifiSSID(){
-    this->_getStringFromFS(_wifiSSID, "wifiSSID");
+    this->_getStringFromFS(_wifiSSID, JSON_ADDR_SSID_NAME);
     return this->_wifiSSID;
 }
 
 String FileSystemManager::getWifiPassword(){
-    this->_getStringFromFS(_wifiPassword, "wifiPassword");
+    this->_getStringFromFS(_wifiPassword, JSON_ADDR_SSID_PASSWORD);
     return this->_wifiPassword;
 }
 
 String FileSystemManager::getEmail(){
-    this->_getStringFromFS(_email, "email");
+    this->_getStringFromFS(_email, JSON_ADDR_EMAIL);
     return this->_email;
 }
 
 String FileSystemManager::getEmailPassword(){
-    this->_getStringFromFS(_emailPassoword, "passwordEmail");
+    this->_getStringFromFS(_emailPassoword, JSON_ADDR_EMAIL_PASSWORD);
     return this->_emailPassoword;
 }
 
 String FileSystemManager::getNameSensor(){
-    this->_getStringFromFS(_nameSensor, "nameSensor");
+    this->_getStringFromFS(_nameSensor, JSON_ADDR_NAME_SENSOR);
     return this->_nameSensor;
 }
 
 String FileSystemManager::getMqttPort(){
-    this->_getStringFromFS(_mqttPort, "mqttPort");
+    this->_getStringFromFS(_mqttPort, JSON_ADDR_MQTT_PORT);
     return this->_mqttPort;
 }
 
 String FileSystemManager::getMqttServer(){
-    this->_getStringFromFS(_mqttServer, "mqttServer");
+    this->_getStringFromFS(_mqttServer, JSON_ADDR_MQTT_SERVER);
     return this->_mqttServer;
 }
 
@@ -91,7 +68,7 @@ bool FileSystemManager::setWifiSSID(char *SSIDname){
 
   strcpy(this->_wifiSSID, SSIDname);
 
-  return  this->_setStringToFS(_wifiSSID, JSON_ADDR_SSID_NAME);
+  return  this->_setStringToFS();
 
 }
 
@@ -99,7 +76,7 @@ bool FileSystemManager::setWifiPassword(char *SSIDpassword){
 
   strcpy(this->_wifiPassword, SSIDpassword);
 
-  return  this->_setStringToFS(_wifiPassword, JSON_ADDR_SSID_PASSWORD);
+  return  this->_setStringToFS();
 
 }
 
@@ -107,7 +84,7 @@ bool FileSystemManager::setEmail(char *email){
 
   strcpy(this->_email, email);
 
- return   this->_setStringToFS(_email, JSON_ADDR_EMAIL);
+ return   this->_setStringToFS();
 
 }
 
@@ -115,7 +92,7 @@ bool FileSystemManager::setEmailPassword(char *emailPassoword){
 
   strcpy(this->_emailPassoword, emailPassoword);
 
-  return  this->_setStringToFS(_emailPassoword, JSON_ADDR_EMAIL_PASSWORD);
+  return  this->_setStringToFS();
 
 }
 
@@ -123,7 +100,7 @@ bool FileSystemManager::setNameSensor(char *nameSensor){
 
   strcpy(this->_nameSensor, nameSensor);
 
-  return this->_setStringToFS(_nameSensor, JSON_ADDR_NAME_SENSOR);
+  return this->_setStringToFS();
 
 }
 
@@ -131,7 +108,7 @@ bool FileSystemManager::setMqttServer(char *mqttServer){
 
   strcpy(this->_mqttServer, mqttServer);
 
-  return this->_setStringToFS(_mqttServer, JSON_ADDR_MQTT_SERVER);
+  return this->_setStringToFS();
 
 }
 
@@ -139,13 +116,13 @@ bool FileSystemManager::setMqttPort(char *mqttPort){
 
   strcpy(this->_mqttPort, mqttPort);
 
-  return this->_setStringToFS(_mqttPort, JSON_ADDR_MQTT_PORT);
+  return this->_setStringToFS();
 
 }
 
 
 
-bool FileSystemManager::_setStringToFS(char *ptr, const char* name){
+bool FileSystemManager::_setStringToFS(){
 
      DynamicJsonDocument json(1024);
     
@@ -188,45 +165,40 @@ void FileSystemManager::_getStringFromFS(char *ptr,  const char* name){
  
       File configFile = LITTLEFS.open("/config.json", "r");
 
-      if (configFile) {
+      if (configFile) 
+        {
         
-        size_t size = configFile.size();
+          size_t size = configFile.size();
         
-        std::unique_ptr<char[]> buf(new char[size]);
+          std::unique_ptr<char[]> buf(new char[size]);
 
-        configFile.readBytes(buf.get(), size);
+          configFile.readBytes(buf.get(), size);
 
-        DynamicJsonDocument json(1024);
+          DynamicJsonDocument json(1024);
 
-        auto deserializeError = deserializeJson(json, buf.get());
+          auto deserializeError = deserializeJson(json, buf.get());
 
-        if ( ! deserializeError ) {
-         
+          if ( ! deserializeError ) 
+            {
+              strcpy(returnBuff, json[name] | "N/A");
+              strcpy(ponteiro, returnBuff); ////
+            } else 
+              {
+                strcpy(ponteiro, "NULL"); ////this->_wifiSSID
+              }
 
-          strcpy(returnBuff, json[name] | "N/A");
-          strcpy(ponteiro, returnBuff); ////
-        
-
-
-        } else {
-
-          
-          strcpy(ponteiro, "NULL"); ////this->_wifiSSID
-    
-          
+          configFile.close();
         }
-        configFile.close();
-        
+    }else
+      {
+        Serial.println("NAO EXISTE O CONFIG FILE!");
+        strcpy(ponteiro, "NULL");
       }
-    }else{
-      Serial.println("NAO EXISTE O CONFIG FILE!");
-      strcpy(ponteiro, "NULL");
-      
-    }
-  } else {
+
+  } else 
+  {
     Serial.println("failed to mount FS");
-    strcpy(ponteiro, "NULL");
-    
+    strcpy(ponteiro, "NULL");  
   }
 
 
