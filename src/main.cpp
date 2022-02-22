@@ -1,6 +1,6 @@
 #include <main.h>
 
-WifiBleManager wifiblemanager;
+FileSystemManager fileSystemManager;
 
 String teste = "";
 char email[EMAIL_SIZE] = "augusto.salto@hotmail.com";
@@ -55,21 +55,47 @@ void setup()
 void loop() {
   
 //bluetooth_loop();
-ble_loop();
-vTaskDelay(pdMS_TO_TICKS(3000));
+//ble_loop();
+vTaskDelay(pdMS_TO_TICKS(1000));
 
-teste = String(wifiblemanager.getEmail());
-vTaskDelay(pdMS_TO_TICKS(500));
-wifiblemanager.setEmail(email);
-vTaskDelay(pdMS_TO_TICKS(500));
+Serial.print("\n\n ********* INICIO *********");
 
-Serial.print("\nTESTE E-MAIL: ");
-Serial.print (teste);
-Serial.print ("\n");
-Serial.print("\nNOVO E-MAIL: ");
-Serial.print (wifiblemanager.getEmail());
-Serial.print ("\n");
+Serial.print("\n GET E-MAIL: ");
+Serial.print (fileSystemManager.getEmail());
 
+vTaskDelay(pdMS_TO_TICKS(200));
+
+Serial.print("\n GET E-MAIL PASSWORD: ");
+Serial.print (fileSystemManager.getEmailPassword());
+
+vTaskDelay(pdMS_TO_TICKS(200));
+
+Serial.print("\n GET SSID: ");
+Serial.print (fileSystemManager.getWifiSSID());
+
+vTaskDelay(pdMS_TO_TICKS(200));
+
+Serial.print("\n GET SSID PASSWORD: ");
+Serial.print (fileSystemManager.getWifiPassword());
+
+vTaskDelay(pdMS_TO_TICKS(200));
+
+Serial.print("\n GET NAME SENSOR: ");
+Serial.print (fileSystemManager.getNameSensor());
+
+vTaskDelay(pdMS_TO_TICKS(200));
+
+Serial.print("\n GET MQTT SERVER: ");
+Serial.print (fileSystemManager.getMqttServer());
+
+vTaskDelay(pdMS_TO_TICKS(200));
+
+Serial.print("\n GET MQTT PORT: ");
+Serial.print (fileSystemManager.getMqttPort());
+
+vTaskDelay(pdMS_TO_TICKS(200));
+
+Serial.print("\n ********* FIM *********");
 
 vTaskDelay(pdMS_TO_TICKS(1005));
 

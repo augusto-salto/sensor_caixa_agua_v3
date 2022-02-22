@@ -1,15 +1,15 @@
-#include <wifi_ble_manager.h>
+#include <file_system_manager.h>
 
 
 
-WifiBleManager::WifiBleManager(){
+FileSystemManager::FileSystemManager(){
 
         
            
 }
 
 
-bool WifiBleManager::isConfigured(){
+bool FileSystemManager::isConfigured(){
 
 /*DynamicJsonDocument json(1024);
     
@@ -52,42 +52,42 @@ bool WifiBleManager::isConfigured(){
 }
 
 
-String WifiBleManager::getWifiSSID(){
+String FileSystemManager::getWifiSSID(){
     this->_getStringFromFS(_wifiSSID, "wifiSSID");
     return this->_wifiSSID;
 }
 
-String WifiBleManager::getWifiPassword(){
+String FileSystemManager::getWifiPassword(){
     this->_getStringFromFS(_wifiPassword, "wifiPassword");
     return this->_wifiPassword;
 }
 
-String WifiBleManager::getEmail(){
+String FileSystemManager::getEmail(){
     this->_getStringFromFS(_email, "email");
     return this->_email;
 }
 
-String WifiBleManager::getEmailPassword(){
+String FileSystemManager::getEmailPassword(){
     this->_getStringFromFS(_emailPassoword, "passwordEmail");
     return this->_emailPassoword;
 }
 
-String WifiBleManager::getNameSensor(){
+String FileSystemManager::getNameSensor(){
     this->_getStringFromFS(_nameSensor, "nameSensor");
     return this->_nameSensor;
 }
 
-String WifiBleManager::getMqttPort(){
+String FileSystemManager::getMqttPort(){
     this->_getStringFromFS(_mqttPort, "mqttPort");
     return this->_mqttPort;
 }
 
-String WifiBleManager::getMqttServer(){
+String FileSystemManager::getMqttServer(){
     this->_getStringFromFS(_mqttServer, "mqttServer");
     return this->_mqttServer;
 }
 
-bool WifiBleManager::setWifiSSID(char *SSIDname){
+bool FileSystemManager::setWifiSSID(char *SSIDname){
 
   strcpy(this->_wifiSSID, SSIDname);
 
@@ -95,7 +95,7 @@ bool WifiBleManager::setWifiSSID(char *SSIDname){
 
 }
 
-bool WifiBleManager::setWifiPassword(char *SSIDpassword){
+bool FileSystemManager::setWifiPassword(char *SSIDpassword){
 
   strcpy(this->_wifiPassword, SSIDpassword);
 
@@ -103,7 +103,7 @@ bool WifiBleManager::setWifiPassword(char *SSIDpassword){
 
 }
 
-bool WifiBleManager::setEmail(char *email){
+bool FileSystemManager::setEmail(char *email){
 
   strcpy(this->_email, email);
 
@@ -111,7 +111,7 @@ bool WifiBleManager::setEmail(char *email){
 
 }
 
-bool WifiBleManager::setEmailPassword(char *emailPassoword){
+bool FileSystemManager::setEmailPassword(char *emailPassoword){
 
   strcpy(this->_emailPassoword, emailPassoword);
 
@@ -119,7 +119,7 @@ bool WifiBleManager::setEmailPassword(char *emailPassoword){
 
 }
 
-bool WifiBleManager::setNameSensor(char *nameSensor){
+bool FileSystemManager::setNameSensor(char *nameSensor){
 
   strcpy(this->_nameSensor, nameSensor);
 
@@ -127,7 +127,7 @@ bool WifiBleManager::setNameSensor(char *nameSensor){
 
 }
 
-bool WifiBleManager::setMqttServer(char *mqttServer){
+bool FileSystemManager::setMqttServer(char *mqttServer){
 
   strcpy(this->_mqttServer, mqttServer);
 
@@ -135,7 +135,7 @@ bool WifiBleManager::setMqttServer(char *mqttServer){
 
 }
 
-bool WifiBleManager::setMqttPort(char *mqttPort){
+bool FileSystemManager::setMqttPort(char *mqttPort){
 
   strcpy(this->_mqttPort, mqttPort);
 
@@ -145,11 +145,19 @@ bool WifiBleManager::setMqttPort(char *mqttPort){
 
 
 
-bool WifiBleManager::_setStringToFS(char *ptr, const char* name){
+bool FileSystemManager::_setStringToFS(char *ptr, const char* name){
 
      DynamicJsonDocument json(1024);
     
-    json[name] = ptr;
+    json[JSON_ADDR_EMAIL] = _email;
+    json[JSON_ADDR_EMAIL_PASSWORD] = _emailPassoword;
+    json[JSON_ADDR_SSID_NAME] = _wifiSSID;
+    json[JSON_ADDR_SSID_PASSWORD] = _wifiPassword;
+    json[JSON_ADDR_NAME_SENSOR] = _nameSensor;
+    json[JSON_ADDR_MQTT_SERVER] = _mqttServer;
+    json[JSON_ADDR_MQTT_PORT] = _mqttPort;
+    
+
     
 
     File configFile = LITTLEFS.open("/config.json", "w");
@@ -169,7 +177,7 @@ bool WifiBleManager::_setStringToFS(char *ptr, const char* name){
 }
 
 
-void WifiBleManager::_getStringFromFS(char *ptr,  const char* name){
+void FileSystemManager::_getStringFromFS(char *ptr,  const char* name){
 
    char returnBuff[100];
     char *ponteiro = ptr;

@@ -1,7 +1,7 @@
 #ifndef WIFI_BLE_MANAGER_H
 #define WIFI_BLE_MANAGER_H
 
-#include <bluetooth_ble_lib.h> 
+//#include <bluetooth_ble_lib.h> 
 #include <LITTLEFS.h>
 #include <ArduinoJson.h> 
 
@@ -22,11 +22,11 @@
 #define MQTT_PORT_SIZE 20
 
 
-class WifiBleManager 
+class FileSystemManager 
 {
     public:
     
-        WifiBleManager();    
+        FileSystemManager();    
 
         bool isConfigured();
 
@@ -45,6 +45,8 @@ class WifiBleManager
         bool setNameSensor(char *nameSensor);
         bool setMqttServer(char *mqttServer);
         bool setMqttPort(char *mqttPort); 
+        
+        
 
 
     private:

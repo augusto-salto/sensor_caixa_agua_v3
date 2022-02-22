@@ -9,12 +9,14 @@ BLECharacteristic *pCharacteristicSSIDPassword;
 BLECharacteristic *pCharacteristicAlternativeMqttServer;
 BLECharacteristic *pCharacteristicAlternativeMqtttPort;
 
+extern FileSystemManager fileSystemManager;
 
 bool deviceConnected = false;
 int humidity = 100;
 int temperature = 222;
 String receivBuff = "";
 String received = "";
+
 
 
 class MyServerCallbacks: public BLEServerCallbacks {
@@ -40,98 +42,145 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 
  
       if (rxValue.length() > 0) {
-        Serial.print("\n*** MENSAGEM RECEBIDA! *** ");
-        Serial.print("\nCharacteristic UUID: ");
-        Serial.print(pCharacteristic->getUUID().toString().c_str());
-        Serial.print("\nMsg length: " + String(rxValue.length()));
-        //Serial.print("\nReceived Value: ");
+
+        //Serial.print("\n*** MENSAGEM RECEBIDA! *** ");
+        //Serial.print("\nCharacteristic UUID: ");
+        //Serial.print(pCharacteristic->getUUID().toString().c_str());
+        
  
         for (int i = 0; i < rxValue.length(); i++) {
           //Serial.print(rxValue[i]);
           receivBuff += rxValue[i];
         }
 
-        //varBuffer = receivBuff.substring(0, receivBuff.indexOf(":"));
-        //valueBuffer = receivBuff.substring(receivBuff.indexOf(":")+1);
         received = receivBuff;
         receivBuff = "";
 
+
+///// CHARACTERISTIC_EMAIL
         if(UUIDstring.equals(String(CHARACTERISTIC_EMAIL)))
         {
-          Serial.print("\nEmail: ");
-          Serial.print(received);
-          Serial.print("\n");
-          received = received + " feedback";
-          pCharacteristicEmail->setValue(received.c_str());
-          pCharacteristicEmail->notify();
+          char sendBuffer[EMAIL_SIZE];
+          received.toCharArray(sendBuffer, EMAIL_SIZE);
+          if(fileSystemManager.setEmail(sendBuffer))
+          {
+              pCharacteristicEmail->setValue("true");
+              pCharacteristicEmail->notify();
+          }
+          else
+          {
+              pCharacteristicEmail->setValue("false");
+              pCharacteristicEmail->notify();
+          }
+          
 
         }
+
+///// CHARACTERISTIC_PASSWORD
           else if(UUIDstring.equals(String(CHARACTERISTIC_PASSWORD)))
           {
-          Serial.print("\nPASSWORD: ");
-          Serial.print(received);
-          Serial.print("\n");
-          received = received + " feedback";
-          pCharacteristicPassword->setValue(received.c_str());
-          pCharacteristicPassword->notify();
+            char sendBuffer[EMAIL_PASSWORD_SIZE];
+            received.toCharArray(sendBuffer, EMAIL_PASSWORD_SIZE);
+            if(fileSystemManager.setEmailPassword(sendBuffer))
+            {
+                pCharacteristicPassword->setValue("true");
+                pCharacteristicPassword->notify();
+            }
+            else
+            {
+                pCharacteristicPassword->setValue("false");
+                pCharacteristicPassword->notify();
+            }
           }
 
+///// CHARACTERISTIC_NAME
           else if(UUIDstring.equals(String(CHARACTERISTIC_NAME)))
           {
-          Serial.print("\nNAME: ");
-          Serial.print(received);
-          Serial.print("\n");
-          received = received + " feedback";
-          pCharacteristicName->setValue(received.c_str());
-          pCharacteristicName->notify();
+            char sendBuffer[NAME_SENSOR_SIZE];
+            received.toCharArray(sendBuffer, NAME_SENSOR_SIZE);
+            if(fileSystemManager.setNameSensor(sendBuffer))
+            {
+                pCharacteristicName->setValue("true");
+                pCharacteristicName->notify();
+            }
+            else
+            {
+                pCharacteristicName->setValue("false");
+                pCharacteristicName->notify();
+            }
           }
 
+///// CHARACTERISTIC_SSID
           else if(UUIDstring.equals(String(CHARACTERISTIC_SSID)))
           {
-          Serial.print("\nSSID: ");
-          Serial.print(received);
-          Serial.print("\n");
-          received = received + " feedback";
-          pCharacteristicSSID->setValue(received.c_str());
-          pCharacteristicSSID->notify();
+            char sendBuffer[SSID_NAME_SIZE];
+            received.toCharArray(sendBuffer, SSID_NAME_SIZE);
+            if(fileSystemManager.setWifiSSID(sendBuffer))
+            {
+                pCharacteristicSSID->setValue("true");
+                pCharacteristicSSID->notify();
+            }
+            else
+            {
+                pCharacteristicSSID->setValue("false");
+                pCharacteristicSSID->notify();
+            }
           }
 
+///// CHARACTERISTIC_SSIDPASSWORD
           else if(UUIDstring.equals(String(CHARACTERISTIC_SSIDPASSWORD)))
           {
-          Serial.print("\nSSID PASSWORD: ");
-          Serial.print(received);
-          Serial.print("\n");
-          received = received + " feedback";
-          pCharacteristicSSIDPassword->setValue(received.c_str());
-          pCharacteristicSSIDPassword->notify();
+            char sendBuffer[SSID_PASSWORD_SIZE];
+            received.toCharArray(sendBuffer, SSID_PASSWORD_SIZE);
+            if(fileSystemManager.setWifiPassword(sendBuffer))
+            {
+                pCharacteristicSSIDPassword->setValue("true");
+                pCharacteristicSSIDPassword->notify();
+            }
+            else
+            {
+                pCharacteristicSSIDPassword->setValue("false");
+                pCharacteristicSSIDPassword->notify();
+            }
           }
 
+///// CHARACTERISTIC_ALTERNATIVEMQTTSERVER
           else if(UUIDstring.equals(String(CHARACTERISTIC_ALTERNATIVEMQTTSERVER)))
           {
-          Serial.print("\nALTERNATIVE MQTT SERVER: ");
-          Serial.print(received);
-          Serial.print("\n");
-          received = received + " feedback";
-          pCharacteristicAlternativeMqttServer->setValue(received.c_str());
-          pCharacteristicAlternativeMqttServer->notify();
+            char sendBuffer[MQTT_SERVER_SIZE];
+            received.toCharArray(sendBuffer, MQTT_SERVER_SIZE);
+            if(fileSystemManager.setMqttServer(sendBuffer))
+            {
+                pCharacteristicAlternativeMqttServer->setValue("true");
+                pCharacteristicAlternativeMqttServer->notify();
+            }
+            else
+            {
+                pCharacteristicAlternativeMqttServer->setValue("false");
+                pCharacteristicAlternativeMqttServer->notify();
+            }
           }
 
+///// CHARACTERISTIC_ALTERNATIVEMQTTPORT
           else if(UUIDstring.equals(String(CHARACTERISTIC_ALTERNATIVEMQTTPORT)))
           {
-          Serial.print("\nALTERNATIVE MQTT PORT: ");
-          Serial.print(received);
-          Serial.print("\n");
-          received = received + " feedback";
-          pCharacteristicAlternativeMqtttPort->setValue(received.c_str());
-          pCharacteristicAlternativeMqtttPort->notify();
+            char sendBuffer[MQTT_PORT_SIZE];
+            received.toCharArray(sendBuffer, MQTT_PORT_SIZE);
+            if(fileSystemManager.setMqttPort(sendBuffer))
+            {
+                pCharacteristicAlternativeMqtttPort->setValue("true");
+                pCharacteristicAlternativeMqtttPort->notify();
+            }
+            else
+            {
+                pCharacteristicAlternativeMqtttPort->setValue("false");
+                pCharacteristicAlternativeMqtttPort->notify();
+            }
           }
 
           
         
-        //Serial.print("\nVARIAVEL: " + varBuffer);
-        //Serial.print("\nVALOR: " + valueBuffer);
-        //Serial.print("\nString de teste: " + received);
-        //Serial.print("\n");
+        
       }
  
       // Processa o caracter recebido do aplicativo. Se for A acende o LED. B apaga o LED
