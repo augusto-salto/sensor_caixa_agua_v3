@@ -1,20 +1,30 @@
 #include <main.h>
 
 FileSystemManager fileSystemManager;
+ConnectManagerClass connectManager;
 
 String teste = "";
 char email[EMAIL_SIZE] = "augusto.salto@hotmail.com";
+bool flagTeste =  false;
 
 void setup() 
 {
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
   pinMode(ONBOARD_BUTTON, INPUT_PULLUP);
-
-
   Serial.begin(115200);
+
+  connectManager.bleSetupAndInit();
+
+  while(!connectManager.checkDataCons()){
+    vTaskDelay(pdMS_TO_TICKS(100));
+  }
+
+  connectManager.disableBleAndConectWifi();
+  
   //bluetooth_init();
-  ble_setup();
+  //ble_setup();
+  
   
 
   #if USE_WIFI_MANAGER == 1
@@ -56,9 +66,11 @@ void loop() {
   
 //bluetooth_loop();
 //ble_loop();
-vTaskDelay(pdMS_TO_TICKS(1000));
+//vTaskDelay(pdMS_TO_TICKS(1000));
 
-Serial.print("\n\n ********* INICIO *********");
+/*
+if(fileSystemManager.isConfigured()){
+  Serial.print("\n\n ********* INICIO *********");
 
 Serial.print("\n GET E-MAIL: ");
 Serial.print (fileSystemManager.getEmail());
@@ -96,8 +108,28 @@ Serial.print (fileSystemManager.getMqttPort());
 vTaskDelay(pdMS_TO_TICKS(200));
 
 Serial.print("\n ********* FIM *********");
+}
 
-vTaskDelay(pdMS_TO_TICKS(1005));
+Serial.print("\n ********* CHECANDO CONSISTENCIA DE DADOS *********");
+
+if(!connectManager.checkDataCons())
+{
+  Serial.print("\nExistem dados inconsistentes!");
+}else if(!flagTeste){
+  Serial.print("\nDados checados com exito, desabilitando bluetooth e habilitando o wifi!");
+  connectManager.disableBleAndConectWifi();
+  flagTeste = true;
+}
+*/
+//Serial.print("\nWIFI CONECTADO! TO NO LOOP!");
+//Serial.print("\nIP LOCAL: ");
+//Serial.print(WiFi.localIP());
+//Serial.print("\n");
+
+
+
+
+vTaskDelay(pdMS_TO_TICKS(5));
 
  
 

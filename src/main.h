@@ -32,6 +32,7 @@
 //#include <bluetooth_lib.h>
 #include <bluetooth_ble_lib.h>
 #include <file_system_manager.h>
+#include <conect_manager.h>
 
 #define ONBOARD_BUTTON 0
 #define BUFF_SIZE 1000

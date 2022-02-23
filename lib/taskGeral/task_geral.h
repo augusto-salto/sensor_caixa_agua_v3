@@ -23,7 +23,7 @@ extern TaskHandle_t handle_mqtt;
 
 
 
-extern PppTech pppTech; 
+//extern PppTech pppTech; 
 extern SemaphoreHandle_t xSerial_semaphore;
 
 

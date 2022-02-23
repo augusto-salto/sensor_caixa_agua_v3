@@ -28,6 +28,8 @@ class FileSystemManager
     
         FileSystemManager();    
 
+        void format();
+
         bool isConfigured();
 
         String getWifiSSID();
@@ -37,6 +39,7 @@ class FileSystemManager
         String getNameSensor();
         String getMqttServer();
         String getMqttPort();
+        
 
         bool setWifiSSID(char *SSIDname);
         bool setWifiPassword(char *SSIDpassword);
@@ -51,13 +54,13 @@ class FileSystemManager
 
     private:
 
-        char _wifiSSID[50];
-        char _wifiPassword[25];
-        char _email[100];
-        char _emailPassoword[25];
-        char _nameSensor[25];
-        char _mqttServer[100];
-        char _mqttPort[20];
+        char _wifiSSID[50] = "N/A";
+        char _wifiPassword[25] = "N/A";
+        char _email[100] = "N/A";
+        char _emailPassoword[25] = "N/A";
+        char _nameSensor[25] = "N/A";
+        char _mqttServer[100] = "N/A";
+        char _mqttPort[20] = "N/A";
 
         void _getStringFromFS(char *ptr,  const char* name);
         bool _setStringToFS();

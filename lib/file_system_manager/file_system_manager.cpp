@@ -28,6 +28,14 @@ bool FileSystemManager::isConfigured(){
 
 }
 
+void FileSystemManager::format(){
+
+  LITTLEFS.begin();
+  LITTLEFS.format();
+       
+
+}
+
 
 String FileSystemManager::getWifiSSID(){
     this->_getStringFromFS(_wifiSSID, JSON_ADDR_SSID_NAME);
@@ -158,13 +166,9 @@ void FileSystemManager::_getStringFromFS(char *ptr,  const char* name){
 
    char returnBuff[100];
     char *ponteiro = ptr;
-
     if (LITTLEFS.begin()) {
-       
     if (LITTLEFS.exists("/config.json")) {
- 
       File configFile = LITTLEFS.open("/config.json", "r");
-
       if (configFile) 
         {
         

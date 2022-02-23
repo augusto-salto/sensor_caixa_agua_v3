@@ -8,6 +8,8 @@ BLECharacteristic *pCharacteristicSSID;
 BLECharacteristic *pCharacteristicSSIDPassword;
 BLECharacteristic *pCharacteristicAlternativeMqttServer;
 BLECharacteristic *pCharacteristicAlternativeMqtttPort;
+BLECharacteristic *pCharacteristicESPrestart;
+
 
 extern FileSystemManager fileSystemManager;
 
@@ -178,7 +180,14 @@ class MyCallbacks: public BLECharacteristicCallbacks {
             }
           }
 
-          
+///// CHARACTERISTIC_ESP_RESTAR
+          else if(UUIDstring.equals(String(CHARACTERISTIC_ESPRESTAR)))
+          {
+                pCharacteristicESPrestart->setValue("true");
+                pCharacteristicESPrestart->notify();
+                vTaskDelay(pdMS_TO_TICKS(2000));
+                ESP.restart();
+          }          
         
         
       }
@@ -265,7 +274,14 @@ void ble_setup(){
                                          BLECharacteristic::PROPERTY_NOTIFY |
                                          BLECharacteristic::PROPERTY_READ |
                                          BLECharacteristic::PROPERTY_WRITE
-                                       );                                          
+                                       );    
+
+  pCharacteristicESPrestart = pService->createCharacteristic(
+                                         CHARACTERISTIC_ESPRESTAR,
+                                         BLECharacteristic::PROPERTY_NOTIFY |
+                                         BLECharacteristic::PROPERTY_READ |
+                                         BLECharacteristic::PROPERTY_WRITE
+                                       );                                                                              
                                        
  
   
@@ -276,28 +292,20 @@ void ble_setup(){
   pCharacteristicSSIDPassword->setCallbacks(new MyCallbacks());
   pCharacteristicAlternativeMqttServer->setCallbacks(new MyCallbacks());
   pCharacteristicAlternativeMqtttPort->setCallbacks(new MyCallbacks());
-
-  //pCharacteristicEmail->addDescriptor(new BLE2902());
-  //pCharacteristicPassword->addDescriptor(new BLE2902());
-  //pCharacteristicName->addDescriptor(new BLE2902());
-  //pCharacteristicSSID->addDescriptor(new BLE2902());
-  //pCharacteristicSSIDPassword->addDescriptor(new BLE2902());
-  //pCharacteristicAlternativeMqttServer->addDescriptor(new BLE2902());
-  //pCharacteristicAlternativeMqtttPort->addDescriptor(new BLE2902());
+  pCharacteristicESPrestart->setCallbacks(new MyCallbacks());
   
-
-  // Inicia o serviço
   pService->start();
   
  
   // Inicia a descoberta do ESP32
   pServer->getAdvertising()->start();
-  Serial.println("Esperando um cliente se conectar...");
+  Serial.println("BLE HABILITADO!");
   //pCharacteristicEmail->setValue("augusto.salto@hotmail.com");
 }
 
 void ble_loop(){
 
+    
 
     if(humidity < 199 ){
       humidity++;

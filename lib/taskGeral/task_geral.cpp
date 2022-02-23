@@ -85,8 +85,8 @@ void task_geral( void *pvParameters )
            vTaskDelete(handle_firebase);
             vTaskDelete(handle_sensor);
 
-            pppTech.formatFileSystem();
-            pppTech.resetWifiManager();
+            //pppTech.formatFileSystem();
+            //pppTech.resetWifiManager();
 
             xSemaphoreTake(xSerial_semaphore, portMAX_DELAY );   
             Serial.print("\nFILE SYSTEM FORMATADO E WIFIMANAGER RESETADO, REINICIANDO O ESP......");
@@ -108,7 +108,7 @@ void task_geral( void *pvParameters )
 }
 
 
-void vTask_Geral_start(){
+void vTask_geral_start(){
 
 xTaskCreate( task_geral /* Funcao a qual esta implementado o que a tarefa deve fazer */
                 , "taskGeralDebug" /* Nome (para fins de debug, se necessário) */
