@@ -57,6 +57,7 @@ void ConnectManagerClass::disableBleAndConectWifi(){
         //WiFi.mode(WIFI_STA);
         WiFi.begin(fileSystemManager.getWifiSSID().c_str(), fileSystemManager.getWifiPassword().c_str());
         
+        LITTLEFS.end();
         
         for(i = 0; i <= TENTATIVAS_CONNECT_WIFI; i++ ){
             if(WiFi.status() != WL_CONNECTED){

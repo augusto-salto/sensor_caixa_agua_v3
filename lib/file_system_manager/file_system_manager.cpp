@@ -32,6 +32,7 @@ void FileSystemManager::format(){
 
   LITTLEFS.begin();
   LITTLEFS.format();
+  
        
 
 }
@@ -156,7 +157,7 @@ bool FileSystemManager::_setStringToFS(){
     serializeJson(json, configFile);
 
     configFile.close();
-
+    LITTLEFS.end();
     return true;
     
 }
@@ -192,6 +193,7 @@ void FileSystemManager::_getStringFromFS(char *ptr,  const char* name){
               }
 
           configFile.close();
+          LITTLEFS.end();
         }
     }else
       {

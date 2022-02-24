@@ -20,7 +20,8 @@
 extern TaskHandle_t handle_firebase;
 extern TaskHandle_t handle_sensor;
 extern TaskHandle_t handle_mqtt;
-
+extern TaskHandle_t handle_wifi_ble_manager;
+   
 
 
 //extern PppTech pppTech; 

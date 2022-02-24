@@ -48,7 +48,7 @@ vTask_geral_start();
 
 void loop() {
 
-vTaskDelay(pdMS_TO_TICKS(10));
+vTaskDelay(pdMS_TO_TICKS(1000));
 
-
+ 
 }

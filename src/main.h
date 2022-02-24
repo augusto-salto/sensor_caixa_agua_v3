@@ -45,7 +45,13 @@
     QueueHandle_t xQueue_Nivel;
     SemaphoreHandle_t xSerial_semaphore;
 
-    
+    extern TaskHandle_t handle_wifi_ble_manager;
+    extern TaskHandle_t handle_firebase;
+extern TaskHandle_t handle_mqtt;
+extern TaskHandle_t handle_sensor;
+extern TaskHandle_t handle_geral;
+extern TaskHandle_t handle_updateFirmware;
+
     
     
 

@@ -59,6 +59,7 @@ void task_wifi_ble_manager( void *pvParameters )
      vTask_sensor_start();
 
      vTaskDelete(handle_wifi_ble_manager);
+     vTaskSuspend(NULL);
 
 } // END TASK
 
