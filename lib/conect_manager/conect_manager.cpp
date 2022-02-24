@@ -1,6 +1,6 @@
 #include <conect_manager.h>
 
-
+FileSystemManager fileSystemManager;
 
 
 bool ConnectManagerClass::checkDataCons(){
@@ -54,7 +54,7 @@ void ConnectManagerClass::disableBleAndConectWifi(){
     
     if(btStop())
     {
-        WiFi.mode(WIFI_STA);
+        //WiFi.mode(WIFI_STA);
         WiFi.begin(fileSystemManager.getWifiSSID().c_str(), fileSystemManager.getWifiPassword().c_str());
         
         

@@ -3,11 +3,12 @@
 
 
 String FirmwareVer = FIRMWARE_VERSION;
-
+WiFiClientSecure * client = new WiFiClientSecure;
 
 void firmwareUpdate(void) {
   WiFiClientSecure client;
   client.setCACert(rootCACertificate);
+  //client.setInsecure();
   httpUpdate.setLedPin(LED_BUILTIN, LOW);
   t_httpUpdate_return ret = httpUpdate.update(client, URL_fw_Bin);
 
@@ -37,22 +38,30 @@ int FirmwareVersionCheck(void) {
   //fwurl += "?";
   //fwurl += String(rand());
   //Serial.println(fwurl);
-  WiFiClientSecure * client = new WiFiClientSecure;
+  //WiFiClientSecure * client = new WiFiClientSecure;
 
   if (client) 
   {
-    client -> setCACert(rootCACertificate);
+   // client -> setCACert(rootCACertificate);
+   client->setInsecure();
+    
+
+    
 
     // Add a scoping block for HTTPClient https to make sure it is destroyed before WiFiClientSecure *client is 
     HTTPClient https;
 
     if (https.begin( * client, fwurl)) 
     { // HTTPS      
-      //Serial.print("[HTTPS] GET...\n");
-      // start connection and send HTTP header
-      vTaskDelay(100);
+      Serial.print("\n>>>>>>>>> HEAP 1: ");
+      Serial.print(xPortGetFreeHeapSize());
+      Serial.print("\n");
+            // start connection and send HTTP header
+      vTaskDelay(200);
+      
       httpCode = https.GET();
-      vTaskDelay(100);
+      vTaskDelay(200);
+      
       if (httpCode == HTTP_CODE_OK) // if version received
       {
         payload = https.getString(); // save received version
@@ -62,8 +71,11 @@ int FirmwareVersionCheck(void) {
       }
       https.end();
     }
- 
-    delete client;
+    client->stop();
+    Serial.print("\n>>>>>>>>> HEAP 2: ");
+    Serial.print(xPortGetFreeHeapSize());
+    Serial.print("\n");
+    //delete client;
   }
       
   if (httpCode == HTTP_CODE_OK) // if version received
@@ -84,5 +96,6 @@ int FirmwareVersionCheck(void) {
       return 1;
     }
   } 
+
   return 0;  
 }

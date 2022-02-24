@@ -7,7 +7,6 @@
 
 #define TENTATIVAS_CONNECT_WIFI 15
 
-extern FileSystemManager fileSystemManager;
 
 class ConnectManagerClass 
 {

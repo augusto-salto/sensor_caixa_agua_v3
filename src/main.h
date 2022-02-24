@@ -30,9 +30,10 @@
 #include "freertos/queue.h"
 
 //#include <bluetooth_lib.h>
-#include <bluetooth_ble_lib.h>
-#include <file_system_manager.h>
-#include <conect_manager.h>
+//#include <bluetooth_ble_lib.h>
+//#include <file_system_manager.h>
+//#include <conect_manager.h>
+#include <task_wifi_ble_manager.h>
 
 #define ONBOARD_BUTTON 0
 #define BUFF_SIZE 1000
