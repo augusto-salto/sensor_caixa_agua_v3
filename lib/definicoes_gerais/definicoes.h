@@ -10,7 +10,7 @@
 
 
 #define USE_FIREBASE 0                  // HABILITA O FIREBASE
-#define USE_MQTT    0                   // HABILITA O PROTOCOLO MQTT
+#define USE_MQTT    1                   // HABILITA O PROTOCOLO MQTT
 #define USE_UPDATE_FIRMWARE 1           // HABILITA A ATUALIZAÇÃO AUTOMATICA VIA GITHUB
 #define USE_WIFI_MANAGER 0              // HABILITA O USO DO WIFIMANAGER
 #define USE_TASK_GERAL 1                // HABILITA A TASK GERAL

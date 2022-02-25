@@ -3,7 +3,7 @@
 
 
 String FirmwareVer = FIRMWARE_VERSION;
-WiFiClientSecure * client = new WiFiClientSecure;
+// WiFiClientSecure * client = new WiFiClientSecure;
 
 void firmwareUpdate(void) {
   WiFiClientSecure client;
@@ -31,6 +31,7 @@ void firmwareUpdate(void) {
 
 
 int FirmwareVersionCheck(void) {
+  WiFiClientSecure * client = new WiFiClientSecure;
   String payload;
   int httpCode = 0;
   String fwurl = "";
@@ -72,6 +73,7 @@ int FirmwareVersionCheck(void) {
       https.end();
     }
     client->stop();
+    delete client;
     Serial.print("\n>>>>>>>>> HEAP 2: ");
     Serial.print(xPortGetFreeHeapSize());
     Serial.print("\n");
