@@ -28,6 +28,7 @@
 
 void ble_loop();
 void ble_setup();
+void deleteBle();
 
 
 

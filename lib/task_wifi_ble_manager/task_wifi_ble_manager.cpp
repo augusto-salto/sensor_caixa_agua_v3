@@ -5,25 +5,39 @@ TaskHandle_t handle_wifi_ble_manager;
 void task_wifi_ble_manager( void *pvParameters )
 {
     (void) pvParameters;
+
     ConnectManagerClass connectManager;
+    bool checkDataIsCons = false;
 
     #if DEBUG_TASK_WIFI_BLE_MANAGER == 1
     UBaseType_t uxHighWaterMark;
     #endif
-
-        
+    
+    #if FORMAT_FILE_SYSTEM == 1
+    connectManager.formatFileSystem();    
+    #endif
     connectManager.bleSetupAndInit();
 
-
+    //xSemaphoreTake(xFileSystem_semaphore, portMAX_DELAY );  
+    //xSemaphoreGive(xFileSystem_semaphore);
     
-    while(!connectManager.checkDataCons())
+    while(!checkDataIsCons)
     {   
 
     vTaskDelay(pdMS_TO_TICKS(100));
+#if FORMAT_FILE_SYSTEM == 0
+ xSemaphoreTake(xFileSystem_semaphore, portMAX_DELAY );  
 
- 
-  
+    if(!checkDataIsCons){
+        if(connectManager.checkDataCons())
+        {
+          checkDataIsCons = true;
+          connectManager.disableBleAndConectWifi();
+        }
+    }
 
+xSemaphoreGive(xFileSystem_semaphore);
+#endif
         #if DEBUG_TASK_WIFI_BLE_MANAGER == 1
             xSemaphoreTake(xSerial_semaphore, portMAX_DELAY );                                  // AGUARDA A LIBERAÇÃO DO SEMAFORO PARA USO DA PORTA SERIAL
             uxHighWaterMark = uxTaskGetStackHighWaterMark( NULL );
@@ -31,14 +45,17 @@ void task_wifi_ble_manager( void *pvParameters )
             Serial.print("\nTASK UPDATE FIRMWARE SIZE: ");
             Serial.print(uxHighWaterMark);
             Serial.print("\n");
+             vTaskDelay(pdMS_TO_TICKS(1000));
             xSemaphoreGive(xSerial_semaphore);                                                  // LIBERA O SEMAFORO PARA USO DE OUTRA TAREFA
+            
         #endif
     
-   vTaskDelay(pdMS_TO_TICKS(10));
+   vTaskDelay(pdMS_TO_TICKS(1000));
 
     } 
     
-    connectManager.disableBleAndConectWifi();
+
+    
     // CRIAÇÃO DAS TAREFAS
   #if USE_TASK_GERAL == 1
     vTask_geral_start();

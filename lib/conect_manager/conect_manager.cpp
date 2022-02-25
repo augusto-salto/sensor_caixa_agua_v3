@@ -1,12 +1,20 @@
 #include <conect_manager.h>
+#include "freertos/FreeRTOS.h"
+#include "freertos/queue.h"
 
 FileSystemManager fileSystemManager;
 
 
 bool ConnectManagerClass::checkDataCons(){
 
-    //checa se o file system foi configurado
+Serial.print("\nHEAP 1: ");
+Serial.print(ESP.getFreeHeap());
+Serial.print("\n");
+
+this->initialFSconfigure();
+
     if(fileSystemManager.isConfigured()){
+        
         if(fileSystemManager.getEmail().equals("N/A"))
         {
             return false;
@@ -41,17 +49,28 @@ bool ConnectManagerClass::checkDataCons(){
         }
     }
     else{
-        
         return false;
     }
 
+
+}
+
+void ConnectManagerClass::initialFSconfigure(){
+    if(!fileSystemManager.isConfigured()){
+        fileSystemManager.initialState();
+        Serial.print("FIZ A PRIMEIRA GRAVACAO NO FS");
+    }
 }
 
 
 
 void ConnectManagerClass::disableBleAndConectWifi(){
     int i = 0;
-    
+
+Serial.print("\nHEAP 2: ");
+Serial.print(ESP.getFreeHeap());
+Serial.print("\n");
+
     if(btStop())
     {
         //WiFi.mode(WIFI_STA);
@@ -80,10 +99,27 @@ void ConnectManagerClass::disableBleAndConectWifi(){
             Serial.print(WiFi.localIP());
             Serial.print("\n");
         }
-        
+
+        deleteBle();
+
+Serial.print("\nHEAP 3: ");
+Serial.print(ESP.getFreeHeap());
+Serial.print("\n");
+
     }
 }
 
 void ConnectManagerClass::bleSetupAndInit(){
+
+    Serial.print("\nHEAP 4: ");
+Serial.print(ESP.getFreeHeap());
+Serial.print("\n");
     ble_setup();
+    Serial.print("\nHEAP 5: ");
+Serial.print(ESP.getFreeHeap());
+Serial.print("\n");
+}
+
+void ConnectManagerClass::formatFileSystem(){
+    fileSystemManager.format();
 }

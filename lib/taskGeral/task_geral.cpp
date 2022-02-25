@@ -112,7 +112,7 @@ void vTask_geral_start(){
 
 xTaskCreate( task_geral /* Funcao a qual esta implementado o que a tarefa deve fazer */
                 , "taskGeralDebug" /* Nome (para fins de debug, se necessário) */
-                , 3000 /* Tamanho da stack (em words) reservada para essa tarefa */
+                , 2000 /* Tamanho da stack (em words) reservada para essa tarefa */
                 , NULL /* Parametros passados (nesse caso, não há) */
                 , 4 /* Prioridade */
                 , &handle_geral ); /* Handle da tarefa, opcional  */

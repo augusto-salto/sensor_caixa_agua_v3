@@ -8,7 +8,7 @@
 
 #include <ppp_mqtt.h>
 
-#define TASK_MQTT_SIZE 15000
+#define TASK_MQTT_SIZE 12000
 #define TASK_MQTT_PRIORITY 5
 
 

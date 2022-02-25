@@ -29,7 +29,8 @@ class FileSystemManager
         FileSystemManager();    
 
         void format();
-
+        void initialState();
+        
         bool isConfigured();
 
         String getWifiSSID();

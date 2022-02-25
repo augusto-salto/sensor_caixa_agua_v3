@@ -9,9 +9,10 @@ BLECharacteristic *pCharacteristicSSIDPassword;
 BLECharacteristic *pCharacteristicAlternativeMqttServer;
 BLECharacteristic *pCharacteristicAlternativeMqtttPort;
 BLECharacteristic *pCharacteristicESPrestart;
-
+BLEServer *pServer;
 
 extern FileSystemManager fileSystemManager;
+extern SemaphoreHandle_t xFileSystem_semaphore;
 
 bool deviceConnected = false;
 int humidity = 100;
@@ -64,6 +65,9 @@ class MyCallbacks: public BLECharacteristicCallbacks {
         {
           char sendBuffer[EMAIL_SIZE];
           received.toCharArray(sendBuffer, EMAIL_SIZE);
+
+          xSemaphoreTake(xFileSystem_semaphore, portMAX_DELAY );
+
           if(fileSystemManager.setEmail(sendBuffer))
           {
               pCharacteristicEmail->setValue("true");
@@ -74,7 +78,8 @@ class MyCallbacks: public BLECharacteristicCallbacks {
               pCharacteristicEmail->setValue("false");
               pCharacteristicEmail->notify();
           }
-          
+
+          xSemaphoreGive(xFileSystem_semaphore);
 
         }
 
@@ -83,6 +88,9 @@ class MyCallbacks: public BLECharacteristicCallbacks {
           {
             char sendBuffer[EMAIL_PASSWORD_SIZE];
             received.toCharArray(sendBuffer, EMAIL_PASSWORD_SIZE);
+
+            xSemaphoreTake(xFileSystem_semaphore, portMAX_DELAY );  
+
             if(fileSystemManager.setEmailPassword(sendBuffer))
             {
                 pCharacteristicPassword->setValue("true");
@@ -93,6 +101,9 @@ class MyCallbacks: public BLECharacteristicCallbacks {
                 pCharacteristicPassword->setValue("false");
                 pCharacteristicPassword->notify();
             }
+
+            xSemaphoreGive(xFileSystem_semaphore);
+
           }
 
 ///// CHARACTERISTIC_NAME
@@ -100,6 +111,9 @@ class MyCallbacks: public BLECharacteristicCallbacks {
           {
             char sendBuffer[NAME_SENSOR_SIZE];
             received.toCharArray(sendBuffer, NAME_SENSOR_SIZE);
+
+            xSemaphoreTake(xFileSystem_semaphore, portMAX_DELAY ); 
+
             if(fileSystemManager.setNameSensor(sendBuffer))
             {
                 pCharacteristicName->setValue("true");
@@ -110,6 +124,7 @@ class MyCallbacks: public BLECharacteristicCallbacks {
                 pCharacteristicName->setValue("false");
                 pCharacteristicName->notify();
             }
+            xSemaphoreGive(xFileSystem_semaphore); 
           }
 
 ///// CHARACTERISTIC_SSID
@@ -117,6 +132,8 @@ class MyCallbacks: public BLECharacteristicCallbacks {
           {
             char sendBuffer[SSID_NAME_SIZE];
             received.toCharArray(sendBuffer, SSID_NAME_SIZE);
+
+            xSemaphoreTake(xFileSystem_semaphore, portMAX_DELAY ); 
             if(fileSystemManager.setWifiSSID(sendBuffer))
             {
                 pCharacteristicSSID->setValue("true");
@@ -127,6 +144,8 @@ class MyCallbacks: public BLECharacteristicCallbacks {
                 pCharacteristicSSID->setValue("false");
                 pCharacteristicSSID->notify();
             }
+            xSemaphoreGive(xFileSystem_semaphore);
+
           }
 
 ///// CHARACTERISTIC_SSIDPASSWORD
@@ -134,6 +153,9 @@ class MyCallbacks: public BLECharacteristicCallbacks {
           {
             char sendBuffer[SSID_PASSWORD_SIZE];
             received.toCharArray(sendBuffer, SSID_PASSWORD_SIZE);
+
+            xSemaphoreTake(xFileSystem_semaphore, portMAX_DELAY ); 
+
             if(fileSystemManager.setWifiPassword(sendBuffer))
             {
                 pCharacteristicSSIDPassword->setValue("true");
@@ -144,13 +166,18 @@ class MyCallbacks: public BLECharacteristicCallbacks {
                 pCharacteristicSSIDPassword->setValue("false");
                 pCharacteristicSSIDPassword->notify();
             }
+            xSemaphoreGive(xFileSystem_semaphore);
           }
 
 ///// CHARACTERISTIC_ALTERNATIVEMQTTSERVER
           else if(UUIDstring.equals(String(CHARACTERISTIC_ALTERNATIVEMQTTSERVER)))
           {
+
             char sendBuffer[MQTT_SERVER_SIZE];
             received.toCharArray(sendBuffer, MQTT_SERVER_SIZE);
+
+            xSemaphoreTake(xFileSystem_semaphore, portMAX_DELAY ); 
+
             if(fileSystemManager.setMqttServer(sendBuffer))
             {
                 pCharacteristicAlternativeMqttServer->setValue("true");
@@ -161,6 +188,7 @@ class MyCallbacks: public BLECharacteristicCallbacks {
                 pCharacteristicAlternativeMqttServer->setValue("false");
                 pCharacteristicAlternativeMqttServer->notify();
             }
+            xSemaphoreGive(xFileSystem_semaphore);
           }
 
 ///// CHARACTERISTIC_ALTERNATIVEMQTTPORT
@@ -168,6 +196,9 @@ class MyCallbacks: public BLECharacteristicCallbacks {
           {
             char sendBuffer[MQTT_PORT_SIZE];
             received.toCharArray(sendBuffer, MQTT_PORT_SIZE);
+
+            xSemaphoreTake(xFileSystem_semaphore, portMAX_DELAY ); 
+
             if(fileSystemManager.setMqttPort(sendBuffer))
             {
                 pCharacteristicAlternativeMqtttPort->setValue("true");
@@ -178,16 +209,19 @@ class MyCallbacks: public BLECharacteristicCallbacks {
                 pCharacteristicAlternativeMqtttPort->setValue("false");
                 pCharacteristicAlternativeMqtttPort->notify();
             }
+            xSemaphoreGive(xFileSystem_semaphore);
           }
 
 ///// CHARACTERISTIC_ESP_RESTAR
           else if(UUIDstring.equals(String(CHARACTERISTIC_ESPRESTAR)))
           {
+                
                 pCharacteristicESPrestart->setValue("true");
                 pCharacteristicESPrestart->notify();
                 vTaskDelay(pdMS_TO_TICKS(2000));
                 ESP.restart();
-          }          
+          }       
+           
         
         
       }
@@ -334,6 +368,22 @@ void ble_loop(){
     //Serial.println(" ***");
   }
   vTaskDelay(pdMS_TO_TICKS(1000));
+}
+
+
+
+void deleteBle()
+{
+delete pServer;
+delete pCharacteristicEmail;
+delete pCharacteristicPassword;
+delete pCharacteristicName;
+delete pCharacteristicSSID;
+delete pCharacteristicSSIDPassword;
+delete pCharacteristicAlternativeMqttServer;
+delete pCharacteristicAlternativeMqtttPort;
+delete pCharacteristicESPrestart;
+Serial.print("BLE DELETE OBJECTS");
 }
 
 

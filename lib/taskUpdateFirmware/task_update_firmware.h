@@ -7,7 +7,7 @@
 #include <definicoes.h>
 
 
-#define TASK_UPDATE_FIRMWARE_SIZE 18000
+#define TASK_UPDATE_FIRMWARE_SIZE 7000
 
 extern String FirmwareVer;
 extern SemaphoreHandle_t xSerial_semaphore;

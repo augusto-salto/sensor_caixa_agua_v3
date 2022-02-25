@@ -15,7 +15,8 @@ class ConnectManagerClass
         void bleSetupAndInit();
         bool checkDataCons();
         void disableBleAndConectWifi();
-
+        void formatFileSystem();
+        void initialFSconfigure();
         
 
     private:

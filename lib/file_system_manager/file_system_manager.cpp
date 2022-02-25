@@ -24,7 +24,7 @@ bool FileSystemManager::isConfigured(){
         
         return false;
     }
-       
+       return false;
 
 }
 
@@ -32,9 +32,17 @@ void FileSystemManager::format(){
 
   LITTLEFS.begin();
   LITTLEFS.format();
-  
+  Serial.print("FORMATADO!");
+  vTaskDelay(pdMS_TO_TICKS(3000));
+  ESP.restart();
        
 
+}
+
+void FileSystemManager::initialState()
+{
+  this->_setStringToFS();
+  
 }
 
 
@@ -145,7 +153,7 @@ bool FileSystemManager::_setStringToFS(){
     
 
     
-
+    LITTLEFS.begin();
     File configFile = LITTLEFS.open("/config.json", "w");
 
     if (!configFile) {
@@ -157,7 +165,7 @@ bool FileSystemManager::_setStringToFS(){
     serializeJson(json, configFile);
 
     configFile.close();
-    LITTLEFS.end();
+    
     return true;
     
 }

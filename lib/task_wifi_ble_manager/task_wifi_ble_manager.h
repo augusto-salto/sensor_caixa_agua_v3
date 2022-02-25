@@ -18,6 +18,7 @@
 #define TASK_WIFI_BLE_MANAGER_SIZE 18000
 
 extern SemaphoreHandle_t xSerial_semaphore;
+extern SemaphoreHandle_t xFileSystem_semaphore;
 
 extern TaskHandle_t handle_firebase;
 extern TaskHandle_t handle_mqtt;

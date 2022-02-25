@@ -26,6 +26,7 @@ void task_update_firmware( void *pvParameters )
     while(1)
     {   
 
+
             if(FirmwareVersionCheck())
             {
                     vTaskDelete(handle_geral);
@@ -41,7 +42,10 @@ void task_update_firmware( void *pvParameters )
             firmwareUpdate();
 
             }
-            //xSemaphoreGive(xSerial_semaphore);  
+            //xSemaphoreGive(xSerial_semaphore); 
+
+
+            
 
         #if DEBUG_TASK_UPDATE_FIRMWARE == 1
             xSemaphoreTake(xSerial_semaphore, portMAX_DELAY );                                  // AGUARDA A LIBERAÇÃO DO SEMAFORO PARA USO DA PORTA SERIAL
