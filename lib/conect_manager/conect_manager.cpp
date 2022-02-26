@@ -7,9 +7,7 @@ FileSystemManager fileSystemManager;
 
 bool ConnectManagerClass::checkDataCons(){
 
-Serial.print("\nHEAP 1: ");
-Serial.print(ESP.getFreeHeap());
-Serial.print("\n");
+
 
 this->initialFSconfigure();
 
@@ -67,15 +65,13 @@ void ConnectManagerClass::initialFSconfigure(){
 void ConnectManagerClass::disableBleAndConectWifi(){
     int i = 0;
 
-Serial.print("\nHEAP 2: ");
-Serial.print(ESP.getFreeHeap());
-Serial.print("\n");
 
-Serial.print("BLE DELETE OBJECTS1");
+
+
 
 BLEDevice::deinit(true);
 vTaskDelay(pdMS_TO_TICKS(200));
-Serial.print("BLE DELETE OBJECTS");
+
 
     if(btStop())
     {
@@ -108,24 +104,19 @@ Serial.print("BLE DELETE OBJECTS");
 
         deleteBle();
 
-Serial.print("\nHEAP 3: ");
-Serial.print(ESP.getFreeHeap());
-Serial.print("\n");
+
 
     }
 }
 
 void ConnectManagerClass::bleSetupAndInit(){
 
-    Serial.print("\nHEAP 4: ");
-Serial.print(ESP.getFreeHeap());
-Serial.print("\n");
     ble_setup();
-    Serial.print("\nHEAP 5: ");
-Serial.print(ESP.getFreeHeap());
-Serial.print("\n");
+    
 }
 
 void ConnectManagerClass::formatFileSystem(){
+
     fileSystemManager.format();
+    
 }

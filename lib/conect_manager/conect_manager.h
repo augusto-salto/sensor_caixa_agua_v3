@@ -5,7 +5,7 @@
 #include <file_system_manager.h>
 #include <WiFi.h>
 
-#define TENTATIVAS_CONNECT_WIFI 15
+#define TENTATIVAS_CONNECT_WIFI 20
 
 
 class ConnectManagerClass 

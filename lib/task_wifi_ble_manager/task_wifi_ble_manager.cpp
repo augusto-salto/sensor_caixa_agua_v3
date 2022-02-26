@@ -18,8 +18,7 @@ void task_wifi_ble_manager( void *pvParameters )
     #endif
     connectManager.bleSetupAndInit();
 
-    //xSemaphoreTake(xFileSystem_semaphore, portMAX_DELAY );  
-    //xSemaphoreGive(xFileSystem_semaphore);
+  
     
     while(!checkDataIsCons)
     {   
@@ -77,8 +76,7 @@ xSemaphoreGive(xFileSystem_semaphore);
 
      vTask_sensor_start();
 
-    //delete handle_wifi_ble_manager;
-    //vPortFree(connectManager);
+   
     vTaskDelete(NULL);
     
 

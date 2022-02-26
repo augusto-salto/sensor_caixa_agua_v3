@@ -54,12 +54,8 @@ int FirmwareVersionCheck(void) {
 
     if (https.begin( * client, fwurl)) 
     { // HTTPS      
-      Serial.print("\n>>>>>>>>> HEAP 1: ");
-      Serial.print(xPortGetFreeHeapSize());
-      Serial.print("\n");
-            // start connection and send HTTP header
+    
       vTaskDelay(200);
-      
       httpCode = https.GET();
       vTaskDelay(200);
       
@@ -74,9 +70,7 @@ int FirmwareVersionCheck(void) {
     }
     client->stop();
     delete client;
-    Serial.print("\n>>>>>>>>> HEAP 2: ");
-    Serial.print(xPortGetFreeHeapSize());
-    Serial.print("\n");
+    
     //delete client;
   }
       

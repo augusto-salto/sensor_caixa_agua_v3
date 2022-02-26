@@ -38,19 +38,15 @@ class MyServerCallbacks: public BLEServerCallbacks {
 
 
 class MyCallbacks: public BLECharacteristicCallbacks {
-    void onWrite(BLECharacteristic *pCharacteristic) {
+
+    void onWrite(BLECharacteristic *pCharacteristic) 
+    {
       std::string rxValue = pCharacteristic->getValue();
-      //String varBuffer;
-      //String valueBuffer;
       String UUIDstring = pCharacteristic->getUUID().toString().c_str();
       UUIDstring.toUpperCase();
 
  
       if (rxValue.length() > 0) {
-
-        //Serial.print("\n*** MENSAGEM RECEBIDA! *** ");
-        //Serial.print("\nCharacteristic UUID: ");
-        //Serial.print(pCharacteristic->getUUID().toString().c_str());
         
  
         for (int i = 0; i < rxValue.length(); i++) {
@@ -228,41 +224,18 @@ class MyCallbacks: public BLECharacteristicCallbacks {
         
       }
  
-      // Processa o caracter recebido do aplicativo. Se for A acende o LED. B apaga o LED
-    /*  if (rxValue.find("A") != -1) { 
-        Serial.println("Turning ON!");
-        digitalWrite(LED_BUILTIN, HIGH);
-      }
-      else if (rxValue.find("B") != -1) {
-        Serial.println("Turning OFF!");
-        digitalWrite(LED_BUILTIN, LOW);
-      }*/
+      
     }
 };
 
 void ble_setup(){
-Serial.print("\nBLE SETUP -> 1: ");
-Serial.print(ESP.getFreeHeap());
-Serial.print("\n");
-// Create the BLE Device
-    //BLEDevice::setMTU(128);
+
+
   BLEDevice::init("PPPTECH_NIVEL_SENSOR"); // Give it a name
-  // Configura o dispositivo como Servidor BLE
   BLEServer *pServer = BLEDevice::createServer();
   pServer->setCallbacks(new MyServerCallbacks());
-
- 
-  // Cria o servico UART
   BLEService *pService = pServer->createService(BLEUUID(SERVICE_UUID), (uint32_t) 30, (uint8_t) 0);
   
- Serial.print("\nBLE SETUP -> 2: ");
-Serial.print(ESP.getFreeHeap());
-Serial.print("\n");
- 
- 
-  // cria uma característica BLE para recebimento dos dados
- 
-
 
   pCharacteristicEmail = pService->createCharacteristic(
                                          CHARACTERISTIC_EMAIL,
@@ -333,21 +306,13 @@ Serial.print("\n");
   pCharacteristicAlternativeMqttServer->setCallbacks(new MyCallbacks());
   pCharacteristicAlternativeMqtttPort->setCallbacks(new MyCallbacks());
   pCharacteristicESPrestart->setCallbacks(new MyCallbacks());
-  Serial.print("\nBLE SETUP -> 3: ");
-Serial.print(ESP.getFreeHeap());
-Serial.print("\n");
+ 
+
   pService->start();
-  
- Serial.print("\nBLE SETUP -> 4: ");
-Serial.print(ESP.getFreeHeap());
-Serial.print("\n");
-  // Inicia a descoberta do ESP32
   pServer->getAdvertising()->start();
-  Serial.print("\nBLE SETUP -> 5: ");
-Serial.print(ESP.getFreeHeap());
-Serial.print("\n");
+  
   Serial.println("BLE HABILITADO!");
-  //pCharacteristicEmail->setValue("augusto.salto@hotmail.com");
+  
 }
 
 
