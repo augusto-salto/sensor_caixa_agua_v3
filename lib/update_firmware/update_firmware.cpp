@@ -36,23 +36,15 @@ int FirmwareVersionCheck(void) {
   int httpCode = 0;
   String fwurl = "";
   fwurl += URL_fw_Version;
-  //fwurl += "?";
-  //fwurl += String(rand());
-  //Serial.println(fwurl);
-  //WiFiClientSecure * client = new WiFiClientSecure;
+  
 
   if (client) 
   {
    // client -> setCACert(rootCACertificate);
-   client->setInsecure();
-    
+  client->setInsecure();
+  HTTPClient https;
 
-    
-
-    // Add a scoping block for HTTPClient https to make sure it is destroyed before WiFiClientSecure *client is 
-    HTTPClient https;
-
-    if (https.begin( * client, fwurl)) 
+  if (https.begin( * client, fwurl)) 
     { // HTTPS      
     
       vTaskDelay(200);
