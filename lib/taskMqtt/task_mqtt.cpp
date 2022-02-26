@@ -13,11 +13,7 @@ void task_mqtt( void *pvParameters )
     MqttClass mqttObject;
     
     char chipIDstring[] = "0";
-    
-
     sprintf(chipIDstring, "%lu", (long)ESP.getEfuseMac()); // CONVERTE O CHIPID PARA CHAR
-    Serial.print("\nMEU CHIP ID: " + String(chipIDstring) + "\n");
-
     mqttObject.setID(chipIDstring);
     mqttObject.begin();
     
