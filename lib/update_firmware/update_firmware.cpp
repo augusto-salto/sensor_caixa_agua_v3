@@ -77,17 +77,13 @@ int FirmwareVersionCheck(void) {
       Serial.print("\nVersao rodando: " + FirmwareVer);
       payload.trim();
     if (payload.equals(FirmwareVer)) {
-      Serial.print("\nDevice already on latest firmware version: ");
-      Serial.print(FirmwareVer);
-      Serial.print("\n");
+      Serial.print("\nDispositivo ja esta atualizado");
       return 0;
     } 
     else 
     {
       //Serial.println(payload);
-      Serial.println("\nNew firmware detected");
-     
-
+      Serial.println("\nNovo firmware encontrado!");
 
      return 1;
     }

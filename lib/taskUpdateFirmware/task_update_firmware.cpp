@@ -49,7 +49,7 @@ void task_update_firmware( void *pvParameters )
             xSemaphoreGive(xSerial_semaphore);                                                  // LIBERA O SEMAFORO PARA USO DE OUTRA TAREFA
         #endif
     
-   vTaskDelay(pdMS_TO_TICKS(5000));
+   vTaskDelay(pdMS_TO_TICKS(180000));
 
     } // END WHILE(1)
 } // END TASK
