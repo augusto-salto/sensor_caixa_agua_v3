@@ -55,11 +55,10 @@ int FirmwareVersionCheck(void) {
       if (httpCode == HTTP_CODE_OK) // if version received
       {
         payload = https.getString(); // save received version
-        Serial.print("PAYLOAD: ");
+        
         payload = payload.substring(payload.indexOf("FIRMWARE_VERSION") + 18, payload.indexOf("FIRMWARE_VERSION") + 21);
         //Serial.print(payload.substring(payload.indexOf("FIRMWARE_VERSION") + 18, payload.indexOf("FIRMWARE_VERSION") + 21));
-        Serial.print(payload);
-        Serial.print("\n");
+        
       } else {
         Serial.print("error in downloading version file:");
         Serial.println(httpCode);
@@ -87,10 +86,10 @@ int FirmwareVersionCheck(void) {
     {
       //Serial.println(payload);
       Serial.println("\nNew firmware detected");
-     // return 1; VERSAO FUNCIONAL! TODO
+     
 
 
-     return 0;
+     return 1;
     }
   } 
 
