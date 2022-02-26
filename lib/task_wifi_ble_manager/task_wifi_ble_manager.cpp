@@ -4,7 +4,7 @@ TaskHandle_t handle_wifi_ble_manager;
 
 void task_wifi_ble_manager( void *pvParameters )
 {
-    (void) pvParameters;
+    //(void) pvParameters;
 
     ConnectManagerClass connectManager;
     bool checkDataIsCons = false;
@@ -33,6 +33,8 @@ void task_wifi_ble_manager( void *pvParameters )
         {
           checkDataIsCons = true;
           connectManager.disableBleAndConectWifi();
+
+
         }
     }
 
@@ -75,8 +77,10 @@ xSemaphoreGive(xFileSystem_semaphore);
 
      vTask_sensor_start();
 
-     vTaskDelete(handle_wifi_ble_manager);
-     vTaskSuspend(NULL);
+    //delete handle_wifi_ble_manager;
+    //vPortFree(connectManager);
+    vTaskDelete(NULL);
+    
 
 } // END TASK
 

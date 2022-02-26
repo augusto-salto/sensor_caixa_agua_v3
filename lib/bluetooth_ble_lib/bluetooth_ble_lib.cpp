@@ -9,7 +9,9 @@ BLECharacteristic *pCharacteristicSSIDPassword;
 BLECharacteristic *pCharacteristicAlternativeMqttServer;
 BLECharacteristic *pCharacteristicAlternativeMqtttPort;
 BLECharacteristic *pCharacteristicESPrestart;
+
 BLEServer *pServer;
+BLEService *pService;
 
 extern FileSystemManager fileSystemManager;
 extern SemaphoreHandle_t xFileSystem_semaphore;
@@ -239,7 +241,9 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 };
 
 void ble_setup(){
-
+Serial.print("\nBLE SETUP -> 1: ");
+Serial.print(ESP.getFreeHeap());
+Serial.print("\n");
 // Create the BLE Device
     //BLEDevice::setMTU(128);
   BLEDevice::init("PPPTECH_NIVEL_SENSOR"); // Give it a name
@@ -251,7 +255,9 @@ void ble_setup(){
   // Cria o servico UART
   BLEService *pService = pServer->createService(BLEUUID(SERVICE_UUID), (uint32_t) 30, (uint8_t) 0);
   
- 
+ Serial.print("\nBLE SETUP -> 2: ");
+Serial.print(ESP.getFreeHeap());
+Serial.print("\n");
  
  
   // cria uma característica BLE para recebimento dos dados
@@ -327,48 +333,24 @@ void ble_setup(){
   pCharacteristicAlternativeMqttServer->setCallbacks(new MyCallbacks());
   pCharacteristicAlternativeMqtttPort->setCallbacks(new MyCallbacks());
   pCharacteristicESPrestart->setCallbacks(new MyCallbacks());
-  
+  Serial.print("\nBLE SETUP -> 3: ");
+Serial.print(ESP.getFreeHeap());
+Serial.print("\n");
   pService->start();
   
- 
+ Serial.print("\nBLE SETUP -> 4: ");
+Serial.print(ESP.getFreeHeap());
+Serial.print("\n");
   // Inicia a descoberta do ESP32
   pServer->getAdvertising()->start();
+  Serial.print("\nBLE SETUP -> 5: ");
+Serial.print(ESP.getFreeHeap());
+Serial.print("\n");
   Serial.println("BLE HABILITADO!");
   //pCharacteristicEmail->setValue("augusto.salto@hotmail.com");
 }
 
-void ble_loop(){
 
-    
-
-    if(humidity < 199 ){
-      humidity++;
-    }else{
-      humidity = 1;
-    }
-
-    if (deviceConnected) {
- 
-     
-    char humidityString[2];
-    char temperatureString[2];
-
-    dtostrf(humidity, 1, 2, humidityString);
-    dtostrf(temperature, 1, 2, temperatureString);
- 
-    char dhtDataString[16];
-    sprintf(dhtDataString, "%d,%d", temperature, humidity);
-     
-    //pCharacteristicEmail->setValue(dhtDataString);
-    //pCharacteristicEmail->notify(); 
-
-    // Envia o valor para o aplicativo!
-    //Serial.print("*** Dado enviado: ");
-    //Serial.print(dhtDataString);
-    //Serial.println(" ***");
-  }
-  vTaskDelay(pdMS_TO_TICKS(1000));
-}
 
 
 
@@ -383,7 +365,10 @@ delete pCharacteristicSSIDPassword;
 delete pCharacteristicAlternativeMqttServer;
 delete pCharacteristicAlternativeMqtttPort;
 delete pCharacteristicESPrestart;
-Serial.print("BLE DELETE OBJECTS");
+delete pServer;
+delete pService;
+
+
 }
 
 

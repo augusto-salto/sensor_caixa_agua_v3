@@ -71,6 +71,12 @@ Serial.print("\nHEAP 2: ");
 Serial.print(ESP.getFreeHeap());
 Serial.print("\n");
 
+Serial.print("BLE DELETE OBJECTS1");
+
+BLEDevice::deinit(true);
+vTaskDelay(pdMS_TO_TICKS(200));
+Serial.print("BLE DELETE OBJECTS");
+
     if(btStop())
     {
         //WiFi.mode(WIFI_STA);

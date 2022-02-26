@@ -7,6 +7,7 @@ TaskHandle_t handle_updateFirmware;
 void task_update_firmware( void *pvParameters )
 {
     (void) pvParameters;
+    
 
     #if DEBUG_TASK_UPDATE_FIRMWARE == 1
     UBaseType_t uxHighWaterMark;
@@ -44,8 +45,12 @@ void task_update_firmware( void *pvParameters )
             }
             //xSemaphoreGive(xSerial_semaphore); 
 
-
+        xSemaphoreTake(xSerial_semaphore, portMAX_DELAY ); 
+            Serial.print("\nHEAP FREE: ");
+            Serial.print(xPortGetFreeHeapSize());
             
+            Serial.print("\n");
+        xSemaphoreGive(xSerial_semaphore);  
 
         #if DEBUG_TASK_UPDATE_FIRMWARE == 1
             xSemaphoreTake(xSerial_semaphore, portMAX_DELAY );                                  // AGUARDA A LIBERAÇÃO DO SEMAFORO PARA USO DA PORTA SERIAL
