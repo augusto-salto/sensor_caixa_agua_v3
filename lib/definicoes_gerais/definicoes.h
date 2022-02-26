@@ -1,7 +1,7 @@
 #ifndef DEFINICOES_H
 #define DEFINICOES_H
 
-#define FIRMWARE_VERSION "1.1"
+#define FIRMWARE_VERSION "1.2"
 
 #define DEBUG_TASK_MQTT 0               // DEBUG TASK MQTT
 #define DEBUG_TASK_SENSOR 0             // DEBUG TASK SENSOR
