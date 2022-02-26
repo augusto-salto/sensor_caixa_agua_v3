@@ -91,7 +91,7 @@ vTaskDelay(pdMS_TO_TICKS(200));
             }
         }
 
-        if(i == 10){
+        if(i == TENTATIVAS_CONNECT_WIFI){
             Serial.println("NAO FOI POSSIVEL CONECTAR AO WIFI! REINICIANDO...");
             vTaskDelay(pdMS_TO_TICKS(1000));
             ESP.restart(); //TODO verificar, ao inves de reiniciar acionar o led amarelo!
@@ -118,5 +118,5 @@ void ConnectManagerClass::bleSetupAndInit(){
 void ConnectManagerClass::formatFileSystem(){
 
     fileSystemManager.format();
-    
+
 }
