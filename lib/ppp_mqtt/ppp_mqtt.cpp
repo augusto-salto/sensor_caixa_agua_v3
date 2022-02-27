@@ -10,6 +10,9 @@ char id_mqtt[15];
 char send_topic[100];
 char receive_topic[100];
 
+char receive_from_android_buffer[100];
+
+
 WiFiClient espClient; 
 PubSubClient MQTT(espClient); 
 
@@ -64,9 +67,7 @@ void MqttClass::setSubscribeTopics()
     strcpy(this->_send_to_android_topic, charBuff);
     strcpy(send_topic, this->_send_to_android_topic);
 
-    Serial.print("SEND TOPIC TO ANDROID: ");
-    Serial.print(this->_send_to_android_topic);
-    Serial.print("\n");
+    
 
 // RECEIVE TOPIC: EMAIL(NAME)+NOMESENSOR+[androidToSensor]
     
@@ -84,9 +85,7 @@ void MqttClass::setSubscribeTopics()
     strcpy(this->_receive_from_android_topic, charBuff);
     strcpy(receive_topic, this->_receive_from_android_topic);
 
-    Serial.print("RECEIVE TOPIC FROM ANDROID: ");
-    Serial.print(this->_receive_from_android_topic);
-    Serial.print("\n");
+    
 
 }
 
@@ -145,16 +144,20 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length)
     //Serial.print(topic);
     
     
-    if (String(topic).equals("augusto.salto@hotmail.com[string]")){
+    if (String(topic).equals(receive_topic)){
         //Serial.print("\nBUFFER DE MENSAGEM TOPICO STRING: " + String(msg));
-    }else if (msg.equals("1"))
+    }
+
+    if (msg.equals("n"))  // ANDROID REQUEST 
     {
-        digitalWrite(LED_BUILTIN, HIGH);
+        char receiveBuff[5] = "n";
+        xQueueOverwrite(xQueue_android_request, (void *)&receiveBuff);  
     }
   
-    if (msg.equals("0"))
+    if (msg.equals("s"))
     {
-        digitalWrite(LED_BUILTIN, LOW);    
+        char receiveBuff[5] = "s";
+        xQueueOverwrite(xQueue_android_request, (void *)&receiveBuff);     
     }
 }
 
@@ -202,9 +205,9 @@ void MqttClass::loop(){
         
 }
 
-void MqttClass::publishMsg(const char *topic, const char *msg)
+void MqttClass::publishMsg(const char *msg)
 {
-        MQTT.publish(topic, msg);
+        MQTT.publish(_send_to_android_topic, msg);
 }
 
 

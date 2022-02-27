@@ -5,7 +5,8 @@ TaskHandle_t handle_mqtt;
 
 void task_mqtt( void *pvParameters )
 {
-    (void) pvParameters;
+    char buff_android_request[5];
+    float nivel = 0.0;
 
     #if DEBUG_TASK_MQTT == 1
     UBaseType_t uxHighWaterMark;
@@ -23,6 +24,18 @@ xSemaphoreGive(xInitialize_semaphore);
         mqttObject.isConected();
         mqttObject.loop();
 
+        xQueueReceive(xQueue_android_request, (void *)&buff_android_request, portMAX_DELAY);  
+        if(String(buff_android_request).equals("n")){
+            xQueueReceive(xQueue_Nivel, (void *)&nivel, portMAX_DELAY);
+            char buffMsg[10];
+            char floatToChar[5];
+
+            strcpy(buffMsg, "n;");
+            dtostrf(nivel, 5,2, floatToChar);
+            strcat(buffMsg, floatToChar);
+
+            mqttObject.publishMsg(buffMsg);
+        }
 
        
     #if DEBUG_TASK_MQTT == 1

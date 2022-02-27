@@ -6,6 +6,9 @@
 #include <definicoes.h>
 #include <file_system_manager.h>
 
+#include "freertos/FreeRTOS.h"
+#include "freertos/queue.h"
+
 #define TOPICO_SUBSCRIBE_LED     "topico_button" 
 #define TOPICO_SUBSCRIBE_STRING    "augusto.salto@hotmail.com[string]"
 #define TOPICO_PUBLISH_BUTTOM   "topico_led"
@@ -15,6 +18,8 @@
 #define MQTT_ID_SIZE 150 
 
 extern FileSystemManager fileSystemManager;
+extern QueueHandle_t xQueue_android_request;
+extern QueueHandle_t xQueue_Nivel;
 
     void initMQTT(void);
     void mqtt_callback(char* topic, byte* payload, unsigned int length);
@@ -42,7 +47,7 @@ class MqttClass
     void subscribeTopic();
 
     // ENVIA UMA MENSAGEM A UM TOPICO
-    void publishMsg(const char *topic, const char *msg);
+    void publishMsg(const char *msg);
 
     // LOOP DO MQTT
     void loop();

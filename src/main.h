@@ -43,6 +43,8 @@
 #endif
 
     QueueHandle_t xQueue_Nivel;
+    QueueHandle_t xQueue_android_request;
+
     SemaphoreHandle_t xSerial_semaphore;
     SemaphoreHandle_t xFileSystem_semaphore;
     SemaphoreHandle_t xInitialize_semaphore;
