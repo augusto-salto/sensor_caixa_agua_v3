@@ -12,6 +12,7 @@
 #include <task_geral.h>
 #include <task_sensor.h>
 #include <task_update_firmware.h>
+#include <led_indication.h>
 
 #include <conect_manager.h>
 

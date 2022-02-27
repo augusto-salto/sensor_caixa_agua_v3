@@ -16,6 +16,7 @@
 #endif
 
 #include <definicoes.h>
+#include <led_indication.h>
 
 extern TaskHandle_t handle_firebase;
 extern TaskHandle_t handle_sensor;
