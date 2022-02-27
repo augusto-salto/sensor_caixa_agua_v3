@@ -5,7 +5,7 @@ TaskHandle_t handle_mqtt;
 
 void task_mqtt( void *pvParameters )
 {
-    char buff_android_request[5];
+    char buff_android_request[5] = "0";
     float nivel = 0.0;
 
     #if DEBUG_TASK_MQTT == 1
