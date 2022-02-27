@@ -18,12 +18,13 @@ void setup()
 
 // CRIAÇÃO DAS FILAS
   xQueue_Nivel = xQueueCreate( 1, sizeof( float ) );
+  xQueue_android_request = xQueueCreate( 1, sizeof( char[5] ) );
 
 // CRIAÇÃO DOS SEMAFOROS
   xSerial_semaphore = xSemaphoreCreateMutex();
   xFileSystem_semaphore = xSemaphoreCreateMutex();
   xInitialize_semaphore = xSemaphoreCreateMutex();
-  
+
   vTask_wifi_ble_manager_start();
 
 

@@ -1,5 +1,7 @@
 SEND TOPIC TO ANDROID: augusto.salto:sensor_caixa:[sensorToAndroid]
 RECEIVE TOPIC FROM ANDROID: augusto.salto:sensor_caixa:[androidToSensor]
+BROKER MQTT: broker.mqtt-dashboard.com
+BROKER PORT: 1883
 
 
 DICIONARIO COMUNICAÇÃO ANDROID -> ESP32

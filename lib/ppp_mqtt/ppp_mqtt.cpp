@@ -138,10 +138,10 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length)
        msg += c;
     }
  
-    //Serial.print("\nChegou a seguinte string via MQTT: ");
-    //Serial.print(msg);
-    //Serial.print("\nTOPICO DE CHEGADA: ");
-    //Serial.print(topic);
+    Serial.print("\nChegou a seguinte string via MQTT: ");
+    Serial.print(msg);
+    Serial.print("\nTOPICO DE CHEGADA: ");
+    Serial.print(topic);
     
     
     if (String(topic).equals(receive_topic)){
@@ -178,6 +178,12 @@ void reconnectMQTT(void)
         if (MQTT.connect(id_mqtt)) 
         {
             Serial.println("Conectado com sucesso ao broker MQTT!");
+            Serial.print("SEND TOPIC: ");
+            Serial.print(send_topic);
+            Serial.print("\n");
+            Serial.print("RECEIVE TOPIC: ");
+            Serial.print(receive_topic);
+            Serial.print("\n");
             MQTT.subscribe(send_topic); 
             MQTT.subscribe(receive_topic); 
         } 

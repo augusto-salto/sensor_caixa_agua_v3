@@ -24,8 +24,10 @@ xSemaphoreGive(xInitialize_semaphore);
         mqttObject.isConected();
         mqttObject.loop();
 
-        xQueueReceive(xQueue_android_request, (void *)&buff_android_request, portMAX_DELAY);  
+        xQueueReceive(xQueue_android_request, (void *)&buff_android_request, pdMS_TO_TICKS(100));  
+
         if(String(buff_android_request).equals("n")){
+
             xQueueReceive(xQueue_Nivel, (void *)&nivel, portMAX_DELAY);
             char buffMsg[10];
             char floatToChar[5];
@@ -35,6 +37,10 @@ xSemaphoreGive(xInitialize_semaphore);
             strcat(buffMsg, floatToChar);
 
             mqttObject.publishMsg(buffMsg);
+
+            // LIMPA O BUFFER REQUEST
+            strcpy(buff_android_request, "0");
+            xQueueOverwrite(xQueue_android_request, (void *)&buff_android_request);   
         }
 
        
