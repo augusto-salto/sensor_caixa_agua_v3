@@ -5,6 +5,7 @@
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
 #include <Arduino.h>
+#include <file_system_manager.h>
 
 #include <ppp_mqtt.h>
 
@@ -14,6 +15,8 @@
 
 
 #include <definicoes.h>
+
+extern FileSystemManager fileSystemManager;
 extern SemaphoreHandle_t xSerial_semaphore;
 
 void task_mqtt( void *pvParameters );

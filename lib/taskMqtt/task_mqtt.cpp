@@ -2,6 +2,7 @@
 
 TaskHandle_t handle_mqtt;
 
+
 void task_mqtt( void *pvParameters )
 {
     (void) pvParameters;
@@ -14,7 +15,12 @@ void task_mqtt( void *pvParameters )
     
     char chipIDstring[] = "0";
     sprintf(chipIDstring, "%lu", (long)ESP.getEfuseMac()); // CONVERTE O CHIPID PARA CHAR
+
+// SET ID DO MQTT
     mqttObject.setID(chipIDstring);
+
+
+// INICIA O MQTT
     mqttObject.begin();
     
     while(1)
@@ -48,6 +54,5 @@ void vTask_mqtt_start(){
                   , TASK_MQTT_PRIORITY 
                   , &handle_mqtt ); 
 
-
-
 }
+

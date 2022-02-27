@@ -18,10 +18,58 @@ MqttClass::MqttClass(){
 
 }
 
+void MqttClass::setMqttServer(char *server){
+    strcpy(this->_mqtt_server, server);
+}
+
+void MqttClass::setMqttPort(char *port){
+    strcpy(this->_mqtt_port, port);
+}
+
 
 
 void MqttClass::begin()
 {
+
+// SET SERVER
+char mqtt_server[MQTT_SERVER_SIZE];
+fileSystemManager.getMqttServer().toCharArray(mqtt_server, MQTT_SERVER_SIZE);
+this->setMqttServer(mqtt_server);
+
+//SET PORT 
+    char mqtt_port[MQTT_PORT_SIZE];
+    fileSystemManager.getMqttPort().toCharArray(mqtt_port, MQTT_PORT_SIZE);
+    this->setMqttPort(mqtt_port);
+
+// SET ID
+    // O FORMATO DO ID SERA: EMAIL+NAMESENSOR
+    
+    char mqtt_id[150];
+    char buff[100];
+
+    fileSystemManager.getEmail().toCharArray(buff, 100);
+
+    strcpy(mqtt_id, buff);
+
+    Serial.print("\n1: ");
+    Serial.print(mqtt_id);
+    Serial.print("\n");
+
+    strcat(mqtt_id, ":");
+
+    fileSystemManager.getNameSensor().toCharArray(buff, 100);
+
+    Serial.print("\n2: ");
+    Serial.print(mqtt_id);
+    Serial.print("\n");
+
+    strcat(mqtt_id, buff);
+
+    this->setID(mqtt_id);
+
+    Serial.print("\nO ID DO MQTT OBJECT É: ");
+    Serial.print(mqtt_id);
+    Serial.print("\n");
 
 initMQTT();
 

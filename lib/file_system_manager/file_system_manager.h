@@ -55,13 +55,13 @@ class FileSystemManager
 
     private:
 
-        char _wifiSSID[50] = "N/A";
-        char _wifiPassword[25] = "N/A";
-        char _email[100] = "N/A";
-        char _emailPassoword[25] = "N/A";
-        char _nameSensor[25] = "N/A";
-        char _mqttServer[100] = "N/A";
-        char _mqttPort[20] = "N/A";
+        char _wifiSSID[SSID_NAME_SIZE] = "N/A";
+        char _wifiPassword[SSID_PASSWORD_SIZE] = "N/A";
+        char _email[EMAIL_SIZE] = "N/A";
+        char _emailPassoword[EMAIL_PASSWORD_SIZE] = "N/A";
+        char _nameSensor[NAME_SENSOR_SIZE] = "N/A";
+        char _mqttServer[MQTT_SERVER_SIZE] = "N/A";
+        char _mqttPort[MQTT_PORT_SIZE] = "N/A";
 
         void _getStringFromFS(char *ptr,  const char* name);
         bool _setStringToFS();
