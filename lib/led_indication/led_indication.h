@@ -5,6 +5,7 @@
 #include <Arduino.h>
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
+#include <analogWrite.h>
 
 enum light_indication {
     running,
