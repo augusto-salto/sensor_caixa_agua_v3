@@ -58,7 +58,7 @@ extern TaskHandle_t handle_sensor;
 extern TaskHandle_t handle_geral;
 extern TaskHandle_t handle_updateFirmware;
 
-    LedIndication ledindication = LedIndication(0, 2, 4);
+    LedIndication ledindication;
     
 
     //extern void task_geral( void *pvParameters );

@@ -18,6 +18,9 @@
 #define FORMAT_FILE_SYSTEM 0
 #define ENABLE_UPDATE 1
 
+#define PIN_RED 23      //GPIO 23
+#define PIN_GREEN 22    //GPIO 22
+#define PIN_BLUE 21     //GPIO 21
 
 
 

@@ -20,7 +20,7 @@ extern QueueHandle_t xQueue_light_indication;
 class LedIndication
 {
     public:
-        LedIndication(int pinRed, int pinYellow, int pinBlue);
+        LedIndication();
         void running();
         void not_configured();
         void wifi_not_conected();
@@ -29,13 +29,13 @@ class LedIndication
         void initializing();
 
     private:
-        void _red();
-        void _green();
-        void _yellow();
+        void _setRed();
+        void _setGreen();
+        void _setYellow();
         
-        int _pinRed;
-        int _pinYellow;
-        int _pinBlue;
+        int _red;
+        int _green;
+        int _blue;
 
 };
 
