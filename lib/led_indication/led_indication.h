@@ -11,7 +11,8 @@ enum light_indication {
     not_configured,
     wifi_not_conected,
     error,
-    waiting 
+    waiting, 
+    initializing 
 };
 
 extern QueueHandle_t xQueue_light_indication;
@@ -25,6 +26,7 @@ class LedIndication
         void wifi_not_conected();
         void error();
         void working();
+        void initializing();
 
     private:
         void _red();

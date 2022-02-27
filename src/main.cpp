@@ -4,12 +4,13 @@
 
 void setup() 
 {
+  
   pinMode(LED_BUILTIN, OUTPUT);
   digitalWrite(LED_BUILTIN, LOW);
   pinMode(ONBOARD_BUTTON, INPUT_PULLUP);
   Serial.begin(115200);
 
-  
+ 
 
   #if USE_WIFI_MANAGER == 1
     pppTech.init();
