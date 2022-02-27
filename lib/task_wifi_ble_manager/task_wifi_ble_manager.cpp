@@ -62,17 +62,19 @@ xSemaphoreGive(xFileSystem_semaphore);
     vTask_geral_start();
   #endif
 
-    #if USE_FIREBASE == 1
-     vTask_firebase_start();
-    #endif
+    
 
-    #if USE_MQTT == 1
-     vTask_mqtt_start();
-    #endif
-
-    #if USE_UPDATE_FIRMWARE == 1
+#if USE_UPDATE_FIRMWARE == 1
       vTask_update_firmware_start();
-    #endif
+#endif
+
+#if USE_FIREBASE == 1
+     vTask_firebase_start();
+#endif
+
+#if USE_MQTT == 1
+     vTask_mqtt_start();
+#endif
 
      vTask_sensor_start();
 

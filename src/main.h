@@ -45,6 +45,7 @@
     QueueHandle_t xQueue_Nivel;
     SemaphoreHandle_t xSerial_semaphore;
     SemaphoreHandle_t xFileSystem_semaphore;
+    SemaphoreHandle_t xInitialize_semaphore;
 
 extern TaskHandle_t handle_wifi_ble_manager;
 extern TaskHandle_t handle_firebase;

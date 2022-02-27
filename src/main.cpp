@@ -22,7 +22,8 @@ void setup()
 // CRIAÇÃO DOS SEMAFOROS
   xSerial_semaphore = xSemaphoreCreateMutex();
   xFileSystem_semaphore = xSemaphoreCreateMutex();
-
+  xInitialize_semaphore = xSemaphoreCreateMutex();
+  
   vTask_wifi_ble_manager_start();
 
 

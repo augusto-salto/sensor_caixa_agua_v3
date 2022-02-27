@@ -6,7 +6,7 @@ TaskHandle_t handle_updateFirmware;
 
 void task_update_firmware( void *pvParameters )
 {
-    (void) pvParameters;
+    
     
 
     #if DEBUG_TASK_UPDATE_FIRMWARE == 1
@@ -19,6 +19,7 @@ void task_update_firmware( void *pvParameters )
     while(1)
     {   
 
+        xSemaphoreTake(xInitialize_semaphore, portMAX_DELAY);
 
             if(FirmwareVersionCheck())
             {
@@ -35,7 +36,7 @@ void task_update_firmware( void *pvParameters )
             firmwareUpdate();
 
             }
-           
+        xSemaphoreGive(xInitialize_semaphore);   
 
         
 
@@ -61,7 +62,7 @@ void vTask_update_firmware_start(){
                   , "taskUpdateFirmware" 
                   , TASK_UPDATE_FIRMWARE_SIZE 
                   , NULL 
-                  , 2 
+                  , 10 
                   , &handle_updateFirmware ); 
                   
 }

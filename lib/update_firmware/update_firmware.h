@@ -26,6 +26,8 @@
 extern TaskHandle_t handle_mqtt;
 extern TaskHandle_t handle_firebase;
 
+
+
 void firmwareUpdate();
 int FirmwareVersionCheck();
 

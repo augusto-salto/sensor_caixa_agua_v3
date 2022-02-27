@@ -14,7 +14,9 @@ void task_mqtt( void *pvParameters )
     MqttClass mqttObject;
 
 // INICIA O MQTT
+xSemaphoreTake(xInitialize_semaphore, portMAX_DELAY);
     mqttObject.begin();
+xSemaphoreGive(xInitialize_semaphore);
     
     while(1)
     {   

@@ -11,6 +11,7 @@
 
 extern String FirmwareVer;
 extern SemaphoreHandle_t xSerial_semaphore;
+extern SemaphoreHandle_t xInitialize_semaphore;
 
 extern TaskHandle_t handle_firebase;
 extern TaskHandle_t handle_mqtt;
