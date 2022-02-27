@@ -50,26 +50,12 @@ this->setMqttServer(mqtt_server);
     fileSystemManager.getEmail().toCharArray(buff, 100);
 
     strcpy(mqtt_id, buff);
-
-    Serial.print("\n1: ");
-    Serial.print(mqtt_id);
-    Serial.print("\n");
-
     strcat(mqtt_id, ":");
 
     fileSystemManager.getNameSensor().toCharArray(buff, 100);
 
-    Serial.print("\n2: ");
-    Serial.print(mqtt_id);
-    Serial.print("\n");
-
     strcat(mqtt_id, buff);
-
     this->setID(mqtt_id);
-
-    Serial.print("\nO ID DO MQTT OBJECT É: ");
-    Serial.print(mqtt_id);
-    Serial.print("\n");
 
 initMQTT();
 
@@ -130,8 +116,9 @@ void reconnectMQTT(void)
 {
     while (!MQTT.connected()) 
     {
-        Serial.print("* Tentando se conectar ao Broker MQTT: ");
+        Serial.print("Broker MQTT: ");
         Serial.println(BROKER_MQTT);
+        
         if (MQTT.connect(id_mqtt)) 
         {
             Serial.println("Conectado com sucesso ao broker MQTT!");
