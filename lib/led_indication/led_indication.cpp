@@ -1,6 +1,7 @@
 #include <led_indication.h>
 
 
+
 // xQueueReceive(xQueue_light_indication, (void *)&status_led, pdMS_TO_TICKS(100)); 
 
 LedIndication::LedIndication(){
@@ -12,12 +13,17 @@ LedIndication::LedIndication(){
 }
 
 void LedIndication::running(){
-    Serial.print("LED INICIADO!!!");
+    this->_setGreen();
 }
 
 void LedIndication::_setGreen(){
+
     this->_red = 0;
     this->_green = 255;
     this->_blue = 127;
+    
+    analogWrite(PIN_RED, _red); 
+    analogWrite(PIN_GREEN, _green);
+    analogWrite(PIN_BLUE, _blue);
 }
 
