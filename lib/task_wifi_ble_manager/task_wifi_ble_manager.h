@@ -20,6 +20,8 @@
 extern SemaphoreHandle_t xSerial_semaphore;
 extern SemaphoreHandle_t xFileSystem_semaphore;
 
+extern LedIndication ledIndication;
+
 extern TaskHandle_t handle_firebase;
 extern TaskHandle_t handle_mqtt;
 extern TaskHandle_t handle_sensor;

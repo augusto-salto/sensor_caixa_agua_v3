@@ -1,0 +1,9 @@
+
+
+
+-> running(); -- GREEN
+-> not_configured(); -- YELLOW
+-> wifi_not_conected(); -- BLINK GREEN
+-> error(); -- RED
+-> working();   -- BLINK YELLOW
+-> initializing(); --  BLUE

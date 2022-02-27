@@ -28,11 +28,14 @@ class LedIndication
         void error();
         void working();
         void initializing();
+        void turnOffLed();
 
     private:
         void _setRed();
         void _setGreen();
         void _setYellow();
+        void _setBlue();
+        void _turnOff();
         
         int _red;
         int _green;

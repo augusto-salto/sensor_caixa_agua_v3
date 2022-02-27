@@ -10,7 +10,7 @@ void setup()
   pinMode(ONBOARD_BUTTON, INPUT_PULLUP);
   Serial.begin(115200);
 
- 
+  ledindication.initializing();
 
   #if USE_WIFI_MANAGER == 1
     pppTech.init();

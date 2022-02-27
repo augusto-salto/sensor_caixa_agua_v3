@@ -22,6 +22,7 @@ void task_wifi_ble_manager( void *pvParameters )
     
     while(!checkDataIsCons)
     {   
+      ledIndication.not_configured();
 
     vTaskDelay(pdMS_TO_TICKS(100));
 #if FORMAT_FILE_SYSTEM == 0
@@ -32,8 +33,7 @@ void task_wifi_ble_manager( void *pvParameters )
         {
           checkDataIsCons = true;
           connectManager.disableBleAndConectWifi();
-
-
+          
         }
     }
 
@@ -58,14 +58,14 @@ xSemaphoreGive(xFileSystem_semaphore);
 
     
     // CRIAÇÃO DAS TAREFAS
-  #if USE_TASK_GERAL == 1
-    vTask_geral_start();
-  #endif
+  
 
     
 
 #if USE_UPDATE_FIRMWARE == 1
+ledIndication.working();
       vTask_update_firmware_start();
+      ledIndication.working();
 #endif
 
 #if USE_FIREBASE == 1
@@ -73,11 +73,19 @@ xSemaphoreGive(xFileSystem_semaphore);
 #endif
 
 #if USE_MQTT == 1
+    ledIndication.working();
      vTask_mqtt_start();
+     ledIndication.working();
 #endif
-
+    ledIndication.working();
      vTask_sensor_start();
+     ledIndication.working();
 
+#if USE_TASK_GERAL == 1
+    ledIndication.working();
+    vTask_geral_start();
+    ledIndication.working();
+  #endif
    
     vTaskDelete(NULL);
     
