@@ -27,7 +27,7 @@ extern TaskHandle_t handle_wifi_ble_manager;
 
 //extern PppTech pppTech; 
 extern SemaphoreHandle_t xSerial_semaphore;
-extern LedIndication ledIndication;
+extern LedIndication ledindication;
 
 
 void task_geral( void *pvParameters );

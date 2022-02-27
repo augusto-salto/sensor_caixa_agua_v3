@@ -14,6 +14,7 @@ LedIndication::LedIndication(){
 
 void LedIndication::running(){
     this->_setGreen();
+    digitalWrite(LED_BUILTIN, HIGH);
 }
 
 void LedIndication::not_configured(){
@@ -33,7 +34,9 @@ void LedIndication::error(){
 
 void LedIndication::working(){
     this->_setYellow();
+    digitalWrite(LED_BUILTIN, HIGH);
      vTaskDelay(pdMS_TO_TICKS(500));
+     digitalWrite(LED_BUILTIN, LOW);
     this->_turnOff();
 }
 

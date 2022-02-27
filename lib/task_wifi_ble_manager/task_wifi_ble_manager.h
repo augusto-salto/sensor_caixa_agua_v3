@@ -12,8 +12,8 @@
 #include <task_geral.h>
 #include <task_sensor.h>
 #include <task_update_firmware.h>
-#include <led_indication.h>
 
+#include <led_indication.h>
 #include <conect_manager.h>
 
 #define TASK_WIFI_BLE_MANAGER_SIZE 18000
@@ -21,7 +21,7 @@
 extern SemaphoreHandle_t xSerial_semaphore;
 extern SemaphoreHandle_t xFileSystem_semaphore;
 
-extern LedIndication ledIndication;
+extern LedIndication ledindication;
 
 extern TaskHandle_t handle_firebase;
 extern TaskHandle_t handle_mqtt;

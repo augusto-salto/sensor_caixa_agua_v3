@@ -19,7 +19,7 @@ void task_geral( void *pvParameters )
 
         if(WiFi.status() != WL_CONNECTED){
 
-            ledIndication.wifi_not_conected();
+            ledindication.wifi_not_conected();
             if(!flagTaskStop){
                 
                 #if USE_FIREBASE == 1
@@ -43,7 +43,7 @@ void task_geral( void *pvParameters )
 
         }else if(WiFi.status() == WL_CONNECTED && flagTaskStop)
         {
-            ledIndication.running();
+            ledindication.running();
             #if USE_FIREBASE == 1
                 xTaskCreate( task_firebase 
                    , "taskFirebaseDebug" 
@@ -75,7 +75,7 @@ void task_geral( void *pvParameters )
 }
 
 if(WiFi.status() == WL_CONNECTED){
-    ledIndication.running();
+    ledindication.running();
 }
 //#endif
 

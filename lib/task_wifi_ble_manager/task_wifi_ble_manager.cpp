@@ -22,7 +22,7 @@ void task_wifi_ble_manager( void *pvParameters )
     
     while(!checkDataIsCons)
     {   
-      ledIndication.not_configured();
+      ledindication.not_configured();
 
     vTaskDelay(pdMS_TO_TICKS(100));
 #if FORMAT_FILE_SYSTEM == 0
@@ -63,9 +63,9 @@ xSemaphoreGive(xFileSystem_semaphore);
     
 
 #if USE_UPDATE_FIRMWARE == 1
-ledIndication.working();
+ledindication.working();
       vTask_update_firmware_start();
-      ledIndication.working();
+      ledindication.working();
 #endif
 
 #if USE_FIREBASE == 1
@@ -73,18 +73,18 @@ ledIndication.working();
 #endif
 
 #if USE_MQTT == 1
-    ledIndication.working();
+    ledindication.working();
      vTask_mqtt_start();
-     ledIndication.working();
+     ledindication.working();
 #endif
-    ledIndication.working();
+    ledindication.working();
      vTask_sensor_start();
-     ledIndication.working();
+     ledindication.working();
 
 #if USE_TASK_GERAL == 1
-    ledIndication.working();
+    ledindication.working();
     vTask_geral_start();
-    ledIndication.working();
+    ledindication.working();
   #endif
    
     vTaskDelete(NULL);
