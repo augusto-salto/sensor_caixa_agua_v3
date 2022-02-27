@@ -12,13 +12,6 @@ void task_mqtt( void *pvParameters )
     #endif
 
     MqttClass mqttObject;
-    
-    char chipIDstring[] = "0";
-    sprintf(chipIDstring, "%lu", (long)ESP.getEfuseMac()); // CONVERTE O CHIPID PARA CHAR
-
-// SET ID DO MQTT
-    mqttObject.setID(chipIDstring);
-
 
 // INICIA O MQTT
     mqttObject.begin();

@@ -74,9 +74,10 @@ int FirmwareVersionCheck(void) {
   if (httpCode == HTTP_CODE_OK) // if version received
   {
       Serial.print("\nVersao encontrada: " + payload);
-      Serial.print("\nVersao rodando: " + FirmwareVer);
+      Serial.print("\nVersao rodando: ");
+      Serial.print(FIRMWARE_VERSION);
       payload.trim();
-    if (payload.equals(FirmwareVer)) {
+    if (payload.equals(FIRMWARE_VERSION)) {
       Serial.print("\nDispositivo ja esta atualizado");
       return 0;
     } 
@@ -84,8 +85,13 @@ int FirmwareVersionCheck(void) {
     {
       //Serial.println(payload);
       Serial.println("\nNovo firmware encontrado!");
-
+      
+#if ENABLE_UPDATE == 1
      return 1;
+#else
+  return 0;
+#endif
+
     }
   } 
 

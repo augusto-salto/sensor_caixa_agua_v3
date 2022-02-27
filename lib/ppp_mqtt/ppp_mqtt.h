@@ -9,8 +9,10 @@
 #define TOPICO_SUBSCRIBE_LED     "topico_button" 
 #define TOPICO_SUBSCRIBE_STRING    "augusto.salto@hotmail.com[string]"
 #define TOPICO_PUBLISH_BUTTOM   "topico_led"
-  
-  
+
+#define SEND_TOPIC_SIZE 100
+#define RECEIVE_TOPIC_SIZE 100
+#define MQTT_ID_SIZE 150 
 
 extern FileSystemManager fileSystemManager;
 
@@ -31,11 +33,10 @@ class MqttClass
     void begin();
 
     // SET O ID DO ESP NO BROKER MQTT
-    void setID(const char *id);
-
-    void setMqttServer(char *server);
-    void setMqttPort(char *port);
-    
+    void setID();
+    void setMqttServer();
+    void setMqttPort();
+    void setSubscribeTopics();
 
     // LISTA DE TOPICOS ESCRITOS!
     void subscribeTopic();
@@ -51,8 +52,11 @@ class MqttClass
 
 private:
     char _mqtt_server[MQTT_SERVER_SIZE];
-    char _mqtt_port[MQTT_PORT_SIZE];
-      
+    int _mqtt_port;
+    char _mqtt_id[MQTT_ID_SIZE];
+
+    char _send_to_android_topic[SEND_TOPIC_SIZE];
+    char _receive_from_android_topic[RECEIVE_TOPIC_SIZE];
 
 };
 
