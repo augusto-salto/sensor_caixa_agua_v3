@@ -2,6 +2,7 @@
 
 TaskHandle_t handle_geral;
 
+
 void task_geral( void *pvParameters )
 {
     (void) pvParameters;
@@ -13,16 +14,9 @@ void task_geral( void *pvParameters )
     while(1)
     {   
         
-        //digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
         
-      /*  xSemaphoreTake(xSerial_semaphore, portMAX_DELAY );   
-            Serial.print("\ngetEmail(): " + pppTech.getEmail());
-            Serial.print("\ngetPassword(): " + pppTech.getPassword());
-        xSemaphoreGive(xSerial_semaphore); */
-
         
 
- //#if USE_FIREBASE == 1
         if(WiFi.status() != WL_CONNECTED){
 
             if(!flagTaskStop){

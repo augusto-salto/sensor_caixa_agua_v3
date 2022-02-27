@@ -140,25 +140,32 @@ void mqtt_callback(char* topic, byte* payload, unsigned int length)
  
     Serial.print("\nChegou a seguinte string via MQTT: ");
     Serial.print(msg);
-    Serial.print("\nTOPICO DE CHEGADA: ");
-    Serial.print(topic);
+    //Serial.print("\nTOPICO DE CHEGADA: ");
+    //Serial.print(topic);
     
     
-    if (String(topic).equals(receive_topic)){
+    /*if (String(topic).equals(receive_topic)){
         //Serial.print("\nBUFFER DE MENSAGEM TOPICO STRING: " + String(msg));
-    }
+    }*/
 
-    if (msg.equals("n"))  // ANDROID REQUEST 
+   /* if (msg.equals("n"))  // ANDROID REQUEST 
     {
         char receiveBuff[5] = "n";
         xQueueOverwrite(xQueue_android_request, (void *)&receiveBuff);  
+        
     }
   
     if (msg.equals("s"))
     {
         char receiveBuff[5] = "s";
         xQueueOverwrite(xQueue_android_request, (void *)&receiveBuff);     
-    }
+    }*/
+
+
+    char receiveBuff[5] = "0";
+    strcpy(receiveBuff, msg.c_str());
+    xQueueOverwrite(xQueue_android_request, (void *)&receiveBuff); 
+    
 }
 
 void initMQTT(void) 
@@ -184,7 +191,7 @@ void reconnectMQTT(void)
             Serial.print("RECEIVE TOPIC: ");
             Serial.print(receive_topic);
             Serial.print("\n");
-            MQTT.subscribe(send_topic); 
+            //MQTT.subscribe(send_topic); 
             MQTT.subscribe(receive_topic); 
         } 
         else
@@ -213,7 +220,7 @@ void MqttClass::loop(){
 
 void MqttClass::publishMsg(const char *msg)
 {
-        MQTT.publish(_send_to_android_topic, msg);
+        MQTT.publish(send_topic, msg);
 }
 
 

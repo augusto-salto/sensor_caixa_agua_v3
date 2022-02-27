@@ -20,6 +20,8 @@ extern FileSystemManager fileSystemManager;
 extern SemaphoreHandle_t xSerial_semaphore;
 extern SemaphoreHandle_t xInitialize_semaphore;
 
+
+
 void task_mqtt( void *pvParameters );
 void vTask_mqtt_start();
 

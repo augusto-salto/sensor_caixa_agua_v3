@@ -6,7 +6,7 @@
 #include "freertos/queue.h"
 //#include <Arduino.h>
 #include <ppptech.h>
-
+#include <led_indication.h>
 #if USE_FIREBASE == 1
 #include <task_firebase.h>
 #endif
@@ -26,11 +26,13 @@ extern TaskHandle_t handle_wifi_ble_manager;
 
 //extern PppTech pppTech; 
 extern SemaphoreHandle_t xSerial_semaphore;
-
+extern LedIndication ledIndication;
 
 
 void task_geral( void *pvParameters );
 void vTask_geral_start();
+
+
 
 
 

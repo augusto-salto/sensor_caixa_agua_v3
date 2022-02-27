@@ -27,20 +27,89 @@ xSemaphoreGive(xInitialize_semaphore);
         xQueueReceive(xQueue_android_request, (void *)&buff_android_request, pdMS_TO_TICKS(100));  
 
         if(String(buff_android_request).equals("n")){
-
+            
             xQueueReceive(xQueue_Nivel, (void *)&nivel, portMAX_DELAY);
-            char buffMsg[10];
+            char buffMsg[15] = "n;";
             char floatToChar[5];
+            String buffString;
 
-            strcpy(buffMsg, "n;");
-            dtostrf(nivel, 5,2, floatToChar);
-            strcat(buffMsg, floatToChar);
-
+            
+            dtostrf(nivel, 5,1, floatToChar);
+            buffString = floatToChar;
+            buffString.trim();
+            strcat(buffMsg, buffString.c_str());
+            
             mqttObject.publishMsg(buffMsg);
-
+            Serial.print("\nMENSAGEM ENVIADA AO ANDROID: ");
+            Serial.print(buffMsg);
+            Serial.print("\n");
+            
             // LIMPA O BUFFER REQUEST
             strcpy(buff_android_request, "0");
+            
             xQueueOverwrite(xQueue_android_request, (void *)&buff_android_request);   
+            
+            
+        } else if(String(buff_android_request).equals("s")){
+            
+            char buffMsg[15] = "s;";
+            String buffString;
+
+            buffString = WiFi.RSSI();
+
+            strcat(buffMsg, buffString.c_str());
+            mqttObject.publishMsg(buffMsg);
+            Serial.print("\nMENSAGEM ENVIADA AO ANDROID: ");
+            Serial.print(buffMsg);
+            Serial.print("\n");
+            
+            // LIMPA O BUFFER REQUEST
+            strcpy(buff_android_request, "0");
+            
+            xQueueOverwrite(xQueue_android_request, (void *)&buff_android_request);   
+            
+        } else if(String(buff_android_request).equals("v")){
+            
+            char buffMsg[15] = "v;";
+            String buffString;
+
+            buffString = FIRMWARE_VERSION;
+
+            strcat(buffMsg, buffString.c_str());
+            mqttObject.publishMsg(buffMsg);
+            Serial.print("\nMENSAGEM ENVIADA AO ANDROID: ");
+            Serial.print(buffMsg);
+            Serial.print("\n");
+            
+            // LIMPA O BUFFER REQUEST
+            strcpy(buff_android_request, "0");
+            
+            xQueueOverwrite(xQueue_android_request, (void *)&buff_android_request);   
+            
+        } else if(String(buff_android_request).equals("f")){
+            
+            char buffMsg[15] = "f;";
+            String buffString;
+
+            buffString = "factory";
+
+            strcat(buffMsg, buffString.c_str());
+            mqttObject.publishMsg(buffMsg);
+            Serial.print("\nMENSAGEM ENVIADA AO ANDROID: ");
+            Serial.print(buffMsg);
+            Serial.print("\n");
+            
+            fileSystemManager.format();
+            vTaskDelay(pdMS_TO_TICKS(1500));
+            ESP.restart();
+
+
+            
+            // LIMPA O BUFFER REQUEST
+            strcpy(buff_android_request, "0");
+            
+            xQueueOverwrite(xQueue_android_request, (void *)&buff_android_request);   
+            
         }
 
        

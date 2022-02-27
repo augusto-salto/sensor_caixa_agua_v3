@@ -1,17 +1,21 @@
+
 SEND TOPIC TO ANDROID: augusto.salto:sensor_caixa:[sensorToAndroid]
 RECEIVE TOPIC FROM ANDROID: augusto.salto:sensor_caixa:[androidToSensor]
 BROKER MQTT: broker.mqtt-dashboard.com
 BROKER PORT: 1883
 
 
-DICIONARIO COMUNICAÇÃO ANDROID -> ESP32
-
+======================================================================================
+DICIONARIO COMUNICAÇÃO ANDROID -> ESP32 
+----------------------------------------
 (xQueue_android_request)
 REQUEST ANDROID -> SIGNIFICADO
 n -> Requisita o nivel
 s -> Requisita o RSSID do Wifi
+v -> versão do firmware
+f -> restaura configuração de fabrica
 
-
+======================================================================================
 EXEMPLO:
 
 Android solicita: "n"

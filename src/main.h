@@ -34,6 +34,7 @@
 //#include <file_system_manager.h>
 //#include <conect_manager.h>
 #include <task_wifi_ble_manager.h>
+#include <led_indication.h>
 
 #define ONBOARD_BUTTON 0
 #define BUFF_SIZE 1000
@@ -44,6 +45,7 @@
 
     QueueHandle_t xQueue_Nivel;
     QueueHandle_t xQueue_android_request;
+    QueueHandle_t xQueue_light_indication;
 
     SemaphoreHandle_t xSerial_semaphore;
     SemaphoreHandle_t xFileSystem_semaphore;
@@ -56,7 +58,7 @@ extern TaskHandle_t handle_sensor;
 extern TaskHandle_t handle_geral;
 extern TaskHandle_t handle_updateFirmware;
 
-    
+    LedIndication ledindication = LedIndication(0, 2, 4);
     
 
     //extern void task_geral( void *pvParameters );
