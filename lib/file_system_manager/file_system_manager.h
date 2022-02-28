@@ -12,6 +12,7 @@
 #define JSON_ADDR_NAME_SENSOR       "nameSensor"
 #define JSON_ADDR_MQTT_SERVER       "mqttServer"
 #define JSON_ADDR_MQTT_PORT         "mqttPort"
+#define JSON_ADDR_CONFIG_STATUS      "configStatus"
 
 #define SSID_NAME_SIZE 50
 #define SSID_PASSWORD_SIZE 25
@@ -41,7 +42,7 @@ class FileSystemManager
         String getNameSensor();
         String getMqttServer();
         String getMqttPort();
-        
+        String getConfigOk();
 
         bool setWifiSSID(char *SSIDname);
         bool setWifiPassword(char *SSIDpassword);
@@ -50,6 +51,7 @@ class FileSystemManager
         bool setNameSensor(char *nameSensor);
         bool setMqttServer(char *mqttServer);
         bool setMqttPort(char *mqttPort); 
+        bool setConfigStatus(char *configStatus); 
         
         
 
@@ -63,6 +65,7 @@ class FileSystemManager
         char _nameSensor[NAME_SENSOR_SIZE] = "N/A";
         char _mqttServer[MQTT_SERVER_SIZE] = "N/A";
         char _mqttPort[MQTT_PORT_SIZE] = "N/A";
+        char _configStatus[10] = "N/A";
 
         void _getStringFromFS(char *ptr,  const char* name);
         bool _setStringToFS();

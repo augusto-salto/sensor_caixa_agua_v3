@@ -5,12 +5,13 @@ light_indication task_sensor_status;
 
 void task_sensor( void *pvParameters )
 {
-    (void) pvParameters;
-
     task_sensor_status = light_indication::initializing;
     ledIndicator.setMqttStatus(task_sensor_status);
 
-    float nivel_send = 0.0;
+    Ultrasonic ultrasonic(TRIGGER_PIN, ECHO_PIN);
+    int nivel_send = 0;
+    int nivel_debug = 0;
+   
 
     #if DEBUG_TASK_SENSOR == 1
     UBaseType_t uxHighWaterMark;
@@ -22,13 +23,28 @@ void task_sensor( void *pvParameters )
     task_sensor_status = light_indication::running;
     ledIndicator.setMqttStatus(task_sensor_status);
 
-        if(nivel_send <= 500.0){
+        /*if(nivel_send <= 500.0){
             nivel_send++;
             vTaskDelay( 500 / portTICK_PERIOD_MS );
         }else{
             nivel_send = 0.0;
             vTaskDelay( 500 / portTICK_PERIOD_MS );
+        }*/
+        nivel_send = ultrasonic.read();
+
+        // para fins de debug TODO
+        if(nivel_send <= 0){
+            if(nivel_debug <= 500){
+            nivel_debug++;
+            nivel_send = nivel_debug;
+            vTaskDelay( 500 / portTICK_PERIOD_MS );
+        }else{
+            nivel_debug = 0;
+            nivel_send = 0;
+            vTaskDelay( 500 / portTICK_PERIOD_MS );
         }
+        }
+    
 
         xQueueOverwrite(xQueue_Nivel, (void *)&nivel_send);                                 // ESCREVE NA FILA A VARIAVEL NIVEL
 
@@ -42,7 +58,7 @@ void task_sensor( void *pvParameters )
         xSemaphoreGive(xSerial_semaphore);                                                  // LIBERA O SEMAFORO PARA USO DE OUTRA TAREFA
     #endif
 
-        vTaskDelay( 1000 / portTICK_PERIOD_MS );
+        vTaskDelay( pdMS_TO_TICKS(2000) );
         
     }
 }

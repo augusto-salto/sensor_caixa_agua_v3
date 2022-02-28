@@ -10,7 +10,7 @@ void task_mqtt( void *pvParameters )
     ledIndicator.setMqttStatus(task_mqtt_status);
 
     char buff_android_request[5] = "0";
-    float nivel = 0.0;
+    int nivel = 0;
 
     #if DEBUG_TASK_MQTT == 1
     UBaseType_t uxHighWaterMark;
@@ -38,12 +38,13 @@ xSemaphoreGive(xInitialize_semaphore);
             
             xQueueReceive(xQueue_Nivel, (void *)&nivel, portMAX_DELAY);
             char buffMsg[15] = "n;";
-            char floatToChar[5];
+            //char floatToChar[5];
+            char intToChar[5];
             String buffString;
 
-            
-            dtostrf(nivel, 5,1, floatToChar);
-            buffString = floatToChar;
+            itoa(nivel, intToChar, 10 );
+            //dtostrf(nivel, 5,1, floatToChar);
+            buffString = intToChar;
             buffString.trim();
             strcat(buffMsg, buffString.c_str());
             

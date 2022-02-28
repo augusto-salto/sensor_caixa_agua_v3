@@ -217,12 +217,24 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 
 ///// CHARACTERISTIC_ESP_RESTAR
           else if(UUIDstring.equals(String(CHARACTERISTIC_ESPRESTAR)))
-          {
-                
+          { 
+            char sendBuffer[10];
+            received.toCharArray(sendBuffer, 10);
+
+            xSemaphoreTake(xFileSystem_semaphore, portMAX_DELAY ); 
+
+            if(fileSystemManager.setConfigStatus(sendBuffer))
+            {
                 pCharacteristicESPrestart->setValue("7e;true");
                 pCharacteristicESPrestart->notify();
-                vTaskDelay(pdMS_TO_TICKS(2000));
-                ESP.restart();
+            }
+            else
+            {
+                pCharacteristicESPrestart->setValue("7e;false");
+                pCharacteristicESPrestart->notify();
+            }
+            xSemaphoreGive(xFileSystem_semaphore);
+                
           }    
 
           else if(UUIDstring.equals(String(CHARACTERISTIC_WIFI)))

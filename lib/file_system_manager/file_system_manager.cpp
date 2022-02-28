@@ -80,6 +80,11 @@ String FileSystemManager::getMqttServer(){
     return this->_mqttServer;
 }
 
+String FileSystemManager::getConfigOk(){
+    this->_getStringFromFS(_configStatus, JSON_ADDR_CONFIG_STATUS);
+    return this->_configStatus;
+}
+
 bool FileSystemManager::setWifiSSID(char *SSIDname){
 
   strcpy(this->_wifiSSID, SSIDname);
@@ -136,6 +141,12 @@ bool FileSystemManager::setMqttPort(char *mqttPort){
 
 }
 
+bool FileSystemManager::setConfigStatus(char *configStatus)
+{
+  strcpy(this->_configStatus, configStatus);
+
+  return this->_setStringToFS();
+}
 
 
 bool FileSystemManager::_setStringToFS(){
@@ -149,7 +160,7 @@ bool FileSystemManager::_setStringToFS(){
     json[JSON_ADDR_NAME_SENSOR] = _nameSensor;
     json[JSON_ADDR_MQTT_SERVER] = _mqttServer;
     json[JSON_ADDR_MQTT_PORT] = _mqttPort;
-    
+    json[JSON_ADDR_CONFIG_STATUS] = _configStatus;
 
     
     LITTLEFS.begin();

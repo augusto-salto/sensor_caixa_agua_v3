@@ -18,10 +18,20 @@
 #define FORMAT_FILE_SYSTEM 0
 #define ENABLE_UPDATE 1
 
+////////////////////////////// DEFINIÇÃO DOS PINOS DA PLACA //////////////////////////////
+
+// LED RGB
 #define PIN_RED 23      //GPIO 23
 #define PIN_GREEN 22    //GPIO 22
 #define PIN_BLUE 21     //GPIO 21
+
+// BOTÃO DE RESET
 #define ONBOARD_BUTTON 0
 
+// SENSOR DE DISTANCIA
+#define TRIGGER_PIN  12
+#define ECHO_PIN 13
+
+////////////////////////////// END DEFINIÇÃO DOS PINOS DA PLACA //////////////////////////////
 
 #endif

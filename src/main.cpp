@@ -6,7 +6,7 @@ void setup()
 {
   
   // CRIAÇÃO DAS FILAS
-  xQueue_Nivel = xQueueCreate( 1, sizeof( float ) );
+  xQueue_Nivel = xQueueCreate( 1, sizeof( int ) );
   xQueue_android_request = xQueueCreate( 1, sizeof( char[5] ) );
   xQueue_light_indication = xQueueCreate(1, sizeof (int));
 
