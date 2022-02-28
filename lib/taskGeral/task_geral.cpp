@@ -1,14 +1,18 @@
 #include <task_geral.h>
 
 TaskHandle_t handle_geral;
+light_indication task_geral_status;
+
 
 
 void task_geral( void *pvParameters )
 {
     
-    
+    task_geral_status = light_indication::initializing;
+    ledIndicator.setGeralStatus(task_geral_status);
+
     bool flagTaskStop = false;
-    
+     pinMode(ONBOARD_BUTTON, INPUT_PULLUP);
 
 
     while(1)
@@ -19,7 +23,9 @@ void task_geral( void *pvParameters )
 
         if(WiFi.status() != WL_CONNECTED){
 
-            ledindication.wifi_not_conected();
+            task_geral_status = light_indication::wifi_not_conected;
+            ledIndicator.setGeralStatus(task_geral_status);
+
             if(!flagTaskStop){
                 
                 #if USE_FIREBASE == 1
@@ -43,7 +49,9 @@ void task_geral( void *pvParameters )
 
         }else if(WiFi.status() == WL_CONNECTED && flagTaskStop)
         {
-            ledindication.running();
+            task_geral_status = light_indication::running;
+            ledIndicator.setGeralStatus(task_geral_status);
+
             #if USE_FIREBASE == 1
                 xTaskCreate( task_firebase 
                    , "taskFirebaseDebug" 
@@ -75,29 +83,52 @@ void task_geral( void *pvParameters )
 }
 
 if(WiFi.status() == WL_CONNECTED){
-    ledindication.running();
+    task_geral_status = light_indication::running;
+    ledIndicator.setGeralStatus(task_geral_status);
 }
 //#endif
 
 /// TRATAMENTO DO BOTÃO ONBOARD!
 
-        if(digitalRead(0) == LOW) {
-           vTaskDelete(handle_firebase);
-            vTaskDelete(handle_sensor);
+        if(digitalRead(ONBOARD_BUTTON) == LOW) {
+            task_geral_status = light_indication::working;
+            ledIndicator.setGeralStatus(task_geral_status);
 
-            //pppTech.formatFileSystem();
-            //pppTech.resetWifiManager();
+            Serial.print("ESTAGIO 1 DO BOTAO, CUIDADO VAI FORMATA");
+            vTaskDelay(pdMS_TO_TICKS(6000));
 
-            xSemaphoreTake(xSerial_semaphore, portMAX_DELAY );   
-            Serial.print("\nFILE SYSTEM FORMATADO E WIFIMANAGER RESETADO, REINICIANDO O ESP......");
-            xSemaphoreGive(xSerial_semaphore);
+            if(digitalRead(ONBOARD_BUTTON) == LOW)
+            {
 
-            digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
-            vTaskDelay( 1000 / portTICK_PERIOD_MS ); 
-            digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
-            vTaskDelay( 1000 / portTICK_PERIOD_MS ); 
+                #if USE_FIREBASE == 1
+                    vTaskDelete(handle_firebase);
+                #endif
 
-            ESP.restart();
+                #if USE_MQTT == 1
+                    vTaskDelete(handle_mqtt);
+                #endif
+
+                #if  USE_UPDATE_FIRMWARE == 1
+                    vTaskDelete(handle_updateFirmware);
+                #endif
+                    vTaskDelete(handle_sensor);
+
+                    FileSystemManager fileSystemManagerTaskGeral;
+                    fileSystemManagerTaskGeral.format();
+
+                    xSemaphoreTake(xSerial_semaphore, portMAX_DELAY );   
+                    Serial.print("\nFILE SYSTEM FORMATADO E WIFIMANAGER RESETADO, REINICIANDO O ESP......");
+                    xSemaphoreGive(xSerial_semaphore);
+
+                    vTaskDelay(pdMS_TO_TICKS(3000));
+
+                    ESP.restart();
+
+            } else
+                {
+                    task_geral_status = light_indication::running;
+                    ledIndicator.setGeralStatus(task_geral_status);
+                }   
 
         }
 

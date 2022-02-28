@@ -12,7 +12,7 @@
 #define TASK_MQTT_SIZE 9000
 #define TASK_MQTT_PRIORITY 5
 
-
+#include <led_indication.h>
 
 #include <definicoes.h>
 
@@ -20,6 +20,7 @@ extern FileSystemManager fileSystemManager;
 extern SemaphoreHandle_t xSerial_semaphore;
 extern SemaphoreHandle_t xInitialize_semaphore;
 
+extern LedIndication ledIndicator;
 
 
 void task_mqtt( void *pvParameters );

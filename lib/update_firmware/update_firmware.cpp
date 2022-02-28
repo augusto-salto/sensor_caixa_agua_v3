@@ -1,7 +1,7 @@
 #include <update_firmware.h>
 #include <cert.h>
 
-
+light_indication task_update_status;
 String FirmwareVer = FIRMWARE_VERSION;
 // WiFiClientSecure * client = new WiFiClientSecure;
 

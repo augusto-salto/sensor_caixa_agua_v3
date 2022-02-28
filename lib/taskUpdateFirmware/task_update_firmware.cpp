@@ -3,11 +3,13 @@
 #include <update_firmware.h>
 
 TaskHandle_t handle_updateFirmware;
+light_indication up_firm_status;
 
 void task_update_firmware( void *pvParameters )
 {
     
-    
+    up_firm_status = light_indication::initializing;
+    ledIndicator.setMqttStatus(up_firm_status);
 
     #if DEBUG_TASK_UPDATE_FIRMWARE == 1
     UBaseType_t uxHighWaterMark;
@@ -18,6 +20,8 @@ void task_update_firmware( void *pvParameters )
     
     while(1)
     {   
+        up_firm_status = light_indication::running;
+        ledIndicator.setUpdateStatus(up_firm_status);
 
         xSemaphoreTake(xInitialize_semaphore, portMAX_DELAY);
 

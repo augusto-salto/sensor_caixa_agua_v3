@@ -9,6 +9,7 @@ BLECharacteristic *pCharacteristicSSIDPassword;
 BLECharacteristic *pCharacteristicAlternativeMqttServer;
 BLECharacteristic *pCharacteristicAlternativeMqtttPort;
 BLECharacteristic *pCharacteristicESPrestart;
+BLECharacteristic *pCharacteristicWifi;
 
 BLEServer *pServer;
 BLEService *pService;
@@ -16,7 +17,7 @@ BLEService *pService;
 extern FileSystemManager fileSystemManager;
 extern SemaphoreHandle_t xFileSystem_semaphore;
 
-bool deviceConnected = false;
+//bool deviceConnected = false;
 int humidity = 100;
 int temperature = 222;
 String receivBuff = "";
@@ -26,11 +27,15 @@ String received = "";
 
 class MyServerCallbacks: public BLEServerCallbacks {
     void onConnect(BLEServer* pServer) {
-      deviceConnected = true;
+      Serial.print("\nCLIENTE BLUETOOTH CONECTADO");
+      //deviceConnected = true;
     };
  
     void onDisconnect(BLEServer* pServer) {
-      deviceConnected = false;
+      //deviceConnected = false;
+      Serial.print("\nCLIENTE BLUETOOTH DESCONECTADO! REINICIANDO O ESP! (BLUETOOTH_BLI_LIB)");
+      vTaskDelay(pdMS_TO_TICKS(2000));
+      ESP.restart();
     }
 
     
@@ -68,12 +73,12 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 
           if(fileSystemManager.setEmail(sendBuffer))
           {
-              pCharacteristicEmail->setValue("true");
+              pCharacteristicEmail->setValue("0e;true");
               pCharacteristicEmail->notify();
           }
           else
           {
-              pCharacteristicEmail->setValue("false");
+              pCharacteristicEmail->setValue("0e;false");
               pCharacteristicEmail->notify();
           }
 
@@ -91,12 +96,12 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 
             if(fileSystemManager.setEmailPassword(sendBuffer))
             {
-                pCharacteristicPassword->setValue("true");
+                pCharacteristicPassword->setValue("1e;true");
                 pCharacteristicPassword->notify();
             }
             else
             {
-                pCharacteristicPassword->setValue("false");
+                pCharacteristicPassword->setValue("1e;false");
                 pCharacteristicPassword->notify();
             }
 
@@ -114,12 +119,12 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 
             if(fileSystemManager.setNameSensor(sendBuffer))
             {
-                pCharacteristicName->setValue("true");
+                pCharacteristicName->setValue("2e;true");
                 pCharacteristicName->notify();
             }
             else
             {
-                pCharacteristicName->setValue("false");
+                pCharacteristicName->setValue("2e;false");
                 pCharacteristicName->notify();
             }
             xSemaphoreGive(xFileSystem_semaphore); 
@@ -134,12 +139,12 @@ class MyCallbacks: public BLECharacteristicCallbacks {
             xSemaphoreTake(xFileSystem_semaphore, portMAX_DELAY ); 
             if(fileSystemManager.setWifiSSID(sendBuffer))
             {
-                pCharacteristicSSID->setValue("true");
+                pCharacteristicSSID->setValue("3e;true");
                 pCharacteristicSSID->notify();
             }
             else
             {
-                pCharacteristicSSID->setValue("false");
+                pCharacteristicSSID->setValue("3e;false");
                 pCharacteristicSSID->notify();
             }
             xSemaphoreGive(xFileSystem_semaphore);
@@ -156,12 +161,12 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 
             if(fileSystemManager.setWifiPassword(sendBuffer))
             {
-                pCharacteristicSSIDPassword->setValue("true");
+                pCharacteristicSSIDPassword->setValue("4e;true");
                 pCharacteristicSSIDPassword->notify();
             }
             else
             {
-                pCharacteristicSSIDPassword->setValue("false");
+                pCharacteristicSSIDPassword->setValue("4e;false");
                 pCharacteristicSSIDPassword->notify();
             }
             xSemaphoreGive(xFileSystem_semaphore);
@@ -178,12 +183,12 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 
             if(fileSystemManager.setMqttServer(sendBuffer))
             {
-                pCharacteristicAlternativeMqttServer->setValue("true");
+                pCharacteristicAlternativeMqttServer->setValue("5e;true");
                 pCharacteristicAlternativeMqttServer->notify();
             }
             else
             {
-                pCharacteristicAlternativeMqttServer->setValue("false");
+                pCharacteristicAlternativeMqttServer->setValue("5e;false");
                 pCharacteristicAlternativeMqttServer->notify();
             }
             xSemaphoreGive(xFileSystem_semaphore);
@@ -199,12 +204,12 @@ class MyCallbacks: public BLECharacteristicCallbacks {
 
             if(fileSystemManager.setMqttPort(sendBuffer))
             {
-                pCharacteristicAlternativeMqtttPort->setValue("true");
+                pCharacteristicAlternativeMqtttPort->setValue("6e;true");
                 pCharacteristicAlternativeMqtttPort->notify();
             }
             else
             {
-                pCharacteristicAlternativeMqtttPort->setValue("false");
+                pCharacteristicAlternativeMqtttPort->setValue("6e;false");
                 pCharacteristicAlternativeMqtttPort->notify();
             }
             xSemaphoreGive(xFileSystem_semaphore);
@@ -214,11 +219,42 @@ class MyCallbacks: public BLECharacteristicCallbacks {
           else if(UUIDstring.equals(String(CHARACTERISTIC_ESPRESTAR)))
           {
                 
-                pCharacteristicESPrestart->setValue("true");
+                pCharacteristicESPrestart->setValue("7e;true");
                 pCharacteristicESPrestart->notify();
                 vTaskDelay(pdMS_TO_TICKS(2000));
                 ESP.restart();
-          }       
+          }    
+
+          else if(UUIDstring.equals(String(CHARACTERISTIC_WIFI)))
+          {
+            char sendBuffer[10];
+            received.toCharArray(sendBuffer, 10);
+          Serial.print("\nWIFI SCAN REQUEST");
+            char buffMsg[100] = "w";
+            String buffString;
+            int numNetWorks = 0;
+
+            numNetWorks = WiFi.scanNetworks();
+            if (numNetWorks == 0){
+                buffString = "null";
+            }else{
+                for (int i = 0; i <= numNetWorks; i++)
+                {
+                    buffString = WiFi.SSID(i);
+                    strcat(buffMsg, ";");
+                    strcat(buffMsg, buffString.c_str());
+                }
+                pCharacteristicWifi->setValue(buffMsg);
+                pCharacteristicWifi->notify();
+                Serial.print("\nWIFI SCAN RESULTS: ");
+                Serial.print(buffMsg);
+                
+                
+            }
+            
+           
+            
+          }   
            
         
         
@@ -294,7 +330,13 @@ void ble_setup(){
                                          BLECharacteristic::PROPERTY_NOTIFY |
                                          BLECharacteristic::PROPERTY_READ |
                                          BLECharacteristic::PROPERTY_WRITE
-                                       );                                                                              
+                                       );  
+  pCharacteristicWifi = pService->createCharacteristic(
+                                         CHARACTERISTIC_WIFI,
+                                         BLECharacteristic::PROPERTY_NOTIFY |
+                                         BLECharacteristic::PROPERTY_READ |
+                                         BLECharacteristic::PROPERTY_WRITE
+                                       );                                                                                
                                        
  
   
@@ -306,6 +348,7 @@ void ble_setup(){
   pCharacteristicAlternativeMqttServer->setCallbacks(new MyCallbacks());
   pCharacteristicAlternativeMqtttPort->setCallbacks(new MyCallbacks());
   pCharacteristicESPrestart->setCallbacks(new MyCallbacks());
+  pCharacteristicWifi->setCallbacks(new MyCallbacks());
  
 
   pService->start();
@@ -330,6 +373,7 @@ delete pCharacteristicSSIDPassword;
 delete pCharacteristicAlternativeMqttServer;
 delete pCharacteristicAlternativeMqtttPort;
 delete pCharacteristicESPrestart;
+delete pCharacteristicWifi;
 delete pServer;
 delete pService;
 

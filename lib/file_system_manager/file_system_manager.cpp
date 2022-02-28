@@ -33,8 +33,7 @@ void FileSystemManager::format(){
   LITTLEFS.begin();
   LITTLEFS.format();
   Serial.print("FORMATADO!");
-  vTaskDelay(pdMS_TO_TICKS(3000));
-  ESP.restart();
+  
        
 
 }

@@ -34,9 +34,9 @@
 //#include <file_system_manager.h>
 //#include <conect_manager.h>
 #include <task_wifi_ble_manager.h>
-#include <led_indication.h>
+#include <task_led.h>
 
-#define ONBOARD_BUTTON 0
+
 #define BUFF_SIZE 1000
 
 #if USE_WIFI_MANAGER == 1
@@ -50,6 +50,7 @@
     SemaphoreHandle_t xSerial_semaphore;
     SemaphoreHandle_t xFileSystem_semaphore;
     SemaphoreHandle_t xInitialize_semaphore;
+    SemaphoreHandle_t xLed_semaphore;
 
 extern TaskHandle_t handle_wifi_ble_manager;
 extern TaskHandle_t handle_firebase;

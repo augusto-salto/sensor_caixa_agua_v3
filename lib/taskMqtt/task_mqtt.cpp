@@ -2,9 +2,13 @@
 
 TaskHandle_t handle_mqtt;
 
+light_indication task_mqtt_status;
 
 void task_mqtt( void *pvParameters )
 {
+    task_mqtt_status = light_indication::initializing;
+    ledIndicator.setMqttStatus(task_mqtt_status);
+
     char buff_android_request[5] = "0";
     float nivel = 0.0;
 
@@ -23,6 +27,10 @@ xSemaphoreGive(xInitialize_semaphore);
     {   
         mqttObject.isConected();
         mqttObject.loop();
+
+        task_mqtt_status = light_indication::running;
+        ledIndicator.setMqttStatus(task_mqtt_status);
+
 
         xQueueReceive(xQueue_android_request, (void *)&buff_android_request, pdMS_TO_TICKS(100));  
 

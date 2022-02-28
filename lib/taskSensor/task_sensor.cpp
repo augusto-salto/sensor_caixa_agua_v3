@@ -1,10 +1,15 @@
 #include <task_sensor.h>
 
 TaskHandle_t handle_sensor;
+light_indication task_sensor_status;
 
 void task_sensor( void *pvParameters )
 {
     (void) pvParameters;
+
+    task_sensor_status = light_indication::initializing;
+    ledIndicator.setMqttStatus(task_sensor_status);
+
     float nivel_send = 0.0;
 
     #if DEBUG_TASK_SENSOR == 1
@@ -14,6 +19,9 @@ void task_sensor( void *pvParameters )
     while(1)
     {   
         
+    task_sensor_status = light_indication::running;
+    ledIndicator.setMqttStatus(task_sensor_status);
+
         if(nivel_send <= 500.0){
             nivel_send++;
             vTaskDelay( 500 / portTICK_PERIOD_MS );

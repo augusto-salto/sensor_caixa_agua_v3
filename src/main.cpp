@@ -5,19 +5,7 @@
 void setup() 
 {
   
-  pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(LED_BUILTIN, LOW);
-  pinMode(ONBOARD_BUTTON, INPUT_PULLUP);
-  Serial.begin(115200);
-
-  ledindication.initializing();
-
-  #if USE_WIFI_MANAGER == 1
-    pppTech.init();
-  #endif
-
-
-// CRIAÇÃO DAS FILAS
+  // CRIAÇÃO DAS FILAS
   xQueue_Nivel = xQueueCreate( 1, sizeof( float ) );
   xQueue_android_request = xQueueCreate( 1, sizeof( char[5] ) );
   xQueue_light_indication = xQueueCreate(1, sizeof (int));
@@ -26,6 +14,21 @@ void setup()
   xSerial_semaphore = xSemaphoreCreateMutex();
   xFileSystem_semaphore = xSemaphoreCreateMutex();
   xInitialize_semaphore = xSemaphoreCreateMutex();
+  xLed_semaphore = xSemaphoreCreateMutex();
+
+
+  vTask_led_start();
+
+
+ 
+  Serial.begin(115200);
+
+  #if USE_WIFI_MANAGER == 1
+    pppTech.init();
+  #endif
+
+
+
 
   vTask_wifi_ble_manager_start();
 

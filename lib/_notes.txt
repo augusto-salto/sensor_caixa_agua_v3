@@ -22,3 +22,21 @@ Android solicita: "n"
 ESP32 responde: "n;50"
 
 onde n é o echo da solicitação e 50 o nivel atual.
+
+__________________________________________________________________________________________________________
+
+EMAIL                            "6E400002-B5A3-F393-E0A9-E50E24DCCA0E"
+
+PASSWORD                         "6E400002-B5A3-F393-E0A9-E50E24DCCA1E"
+
+NAME                             "6E400002-B5A3-F393-E0A9-E50E24DCCA2E"
+
+SSID                             "6E400002-B5A3-F393-E0A9-E50E24DCCA3E"
+
+SSIDPASSWORD                     "6E400002-B5A3-F393-E0A9-E50E24DCCA4E"
+
+ALTERNATIVEMQTTSERVER            "6E400002-B5A3-F393-E0A9-E50E24DCCA5E"
+
+ALTERNATIVEMQTTPORT              "6E400002-B5A3-F393-E0A9-E50E24DCCA6E"
+
+ESPRESTAR                        "6E400002-B5A3-F393-E0A9-E50E24DCCA7E"

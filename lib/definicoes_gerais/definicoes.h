@@ -21,8 +21,7 @@
 #define PIN_RED 23      //GPIO 23
 #define PIN_GREEN 22    //GPIO 22
 #define PIN_BLUE 21     //GPIO 21
-
-
+#define ONBOARD_BUTTON 0
 
 
 #endif

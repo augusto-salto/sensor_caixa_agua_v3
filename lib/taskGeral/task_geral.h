@@ -22,12 +22,12 @@ extern TaskHandle_t handle_firebase;
 extern TaskHandle_t handle_sensor;
 extern TaskHandle_t handle_mqtt;
 extern TaskHandle_t handle_wifi_ble_manager;
-   
+extern TaskHandle_t handle_updateFirmware;
 
 
 //extern PppTech pppTech; 
 extern SemaphoreHandle_t xSerial_semaphore;
-extern LedIndication ledindication;
+extern LedIndication ledIndicator;
 
 
 void task_geral( void *pvParameters );
