@@ -1,0 +1,104 @@
+{
+	"folders": [
+		{
+			"path": "..\\..\\display_v2"
+		},
+		{
+			"path": "..\\..\\visor_nivel"
+		},
+		{
+			"path": "..\\..\\sensor_cx_agua_2"
+		},
+		{
+			"path": "..\\..\\nivel_caixa_esp32_freertos"
+		},
+		{
+			"path": "..\\..\\firebase2"
+		},
+		{
+			"name": "visor nivel 2",
+			"path": "..\\..\\visor nivel 2"
+		},
+		{
+			"name": "wifiManagerEsp8266",
+			"path": "..\\..\\wifiManagerEsp8266"
+		},
+		{
+			"name": "sensor_caixa_agua_v3",
+			"path": ".."
+		},
+		{
+			"path": "..\\..\\nivel_caixa_esp32"
+		},
+		{
+			"name": "MqttClientEsp8266",
+			"path": "..\\..\\MqttClientEsp8266"
+		},
+		{
+			"name": "MqttLedEsp8266",
+			"path": "..\\..\\MqttLedEsp8266"
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"iostream": "cpp",
+			"array": "cpp",
+			"atomic": "cpp",
+			"*.tcc": "cpp",
+			"cctype": "cpp",
+			"chrono": "cpp",
+			"clocale": "cpp",
+			"cmath": "cpp",
+			"cstdarg": "cpp",
+			"cstddef": "cpp",
+			"cstdint": "cpp",
+			"cstdio": "cpp",
+			"cstdlib": "cpp",
+			"cstring": "cpp",
+			"ctime": "cpp",
+			"cwchar": "cpp",
+			"cwctype": "cpp",
+			"deque": "cpp",
+			"list": "cpp",
+			"unordered_map": "cpp",
+			"unordered_set": "cpp",
+			"vector": "cpp",
+			"exception": "cpp",
+			"algorithm": "cpp",
+			"functional": "cpp",
+			"optional": "cpp",
+			"ratio": "cpp",
+			"string_view": "cpp",
+			"system_error": "cpp",
+			"tuple": "cpp",
+			"type_traits": "cpp",
+			"fstream": "cpp",
+			"initializer_list": "cpp",
+			"iomanip": "cpp",
+			"iosfwd": "cpp",
+			"istream": "cpp",
+			"limits": "cpp",
+			"memory": "cpp",
+			"new": "cpp",
+			"ostream": "cpp",
+			"numeric": "cpp",
+			"sstream": "cpp",
+			"stdexcept": "cpp",
+			"streambuf": "cpp",
+			"cinttypes": "cpp",
+			"utility": "cpp",
+			"typeinfo": "cpp",
+			"bit": "cpp",
+			"compare": "cpp",
+			"concepts": "cpp",
+			"map": "cpp",
+			"set": "cpp",
+			"iterator": "cpp",
+			"memory_resource": "cpp",
+			"netfwd": "cpp",
+			"random": "cpp",
+			"string": "cpp",
+			"ranges": "cpp"
+		}
+	}
+}
