@@ -1,5 +1,6 @@
 #ifndef TASK_SENSOR_H
 #define TASK_SENSOR_H
+
 #pragma once
 #include "freertos/FreeRTOS.h"
 #include "freertos/queue.h"
